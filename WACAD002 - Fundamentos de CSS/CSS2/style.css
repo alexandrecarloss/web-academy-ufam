@@ -1,0 +1,10 @@
+body {
+  background-color: aquamarine;
+}
+
+p {
+  border: 5px solid blue;
+  border-top-left-radius: 16px;
+  background-color: antiquewhite;
+  width: 96px;
+}
