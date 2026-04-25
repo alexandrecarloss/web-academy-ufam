@@ -1,6 +1,30 @@
-img {
-    top: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    position: ;
+div.blue {
+  position: relative;
+  width: 100px;
+  height: 200px;
+  background-color: blue;
+}
+div.yellow {
+  position: relative;
+  left: 100px;
+  top: -200px;
+  width: 100px;
+  height: 150px;
+  background-color: yellow;
+}
+div.red {
+  position: relative;
+  left: 200px;
+  top: -350px;
+  width: 100px;
+  height: 150px;
+  background-color: red;
+}
+div.green {
+  position: relative;
+  left: 100px;
+  top: -350px;
+  width: 200px;
+  height: 50px;
+  background-color: green;
 }
