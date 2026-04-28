@@ -1,0 +1,32 @@
+.container {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  grid-template-areas:
+    "head head nav nav"
+    "main ads ads ads"
+    "foot foot foot foot";
+  gap: 8px;
+  height: 400px;
+}
+
+.container header {
+  background-color: rgb(79, 39, 39);
+  grid-area: head;
+}
+.container nav {
+  background-color: rgb(226, 104, 43);
+  grid-area: nav;
+}
+.container aside {
+  background-color: brown;
+  grid-area: ads;
+}
+.container main {
+  background-color: cadetblue;
+  grid-area: main;
+}
+.container footer {
+  background-color: bisque;
+  grid-area: foot;
+}
