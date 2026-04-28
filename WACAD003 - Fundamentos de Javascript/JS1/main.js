@@ -7,44 +7,92 @@ function randomValueFromArray(array) {
   return array[random];
 }
 
-let storyText =
-  "It was 94 fahrenheit outside, so :insertx: went for a walk. When they got to :inserty:, they stared in horror for a few moments, then :insertz:. Bob saw the whole thing, but was not surprised — :insertx: weighs 300 pounds, and it was a hot day.";
+const stories = {
+  pt: {
+    storyText:
+      "Era uma noite :clima:, com :temp: graus lá fora e sons de :som:. :personagem: só queria :acao1:, mas teve um :pressagio: e percebeu que a atividade de JavaScript deveria ser entregue até :prazo:. Desesperado, ele precisaria converter :peso: libras em quilos antes que :eventoFinal:.",
 
-const insertX = ["Willy the Goblin", "Big Daddy", "Father Christmas"];
+    clima: ["fria e chuvosa", "sombria e misteriosa", "gelada digna de filme de terror"],
+    temp: ["21", "13", "7"],
+    som: ["trovões dramáticos", "latidos suspeitos", "um vizinho cantando mal"],
+    personagem: ["Cacique", "O Dev Sonolento", "Mestre do Bug"],
+    acao1: ["dormir por 12 horas", "hibernar igual um urso", "sumir do mundo"],
+    pressagio: ["mal presságio", "bug existencial", "alerta espiritual do JavaScript"],
+    prazo: ["meia-noite", "23:59 em ponto", "o último segundo possível"],
+    peso: ["300", "150", "999"],
+    eventoFinal: [
+      "o Wi-Fi caísse",
+      "o VS Code travasse",
+      "o computador começasse a atualizar sozinho",
+      "galinhas com braços comessassem a invadir sua casa"
+    ]
+  },
 
-const insertY = ["the soup kitchen", "Disneyland", "the White House"];
+  en: {
+    storyText:
+      "It was a :climate: night, with :temp: degrees outside and sounds of :sound:. :character: just wanted to :action1:, but suddenly had a :omen: and realized the JavaScript assignment was due at :deadline:. In panic, they had to convert :weight: pounds into kilos before :finalEvent:.",
 
-const insertZ = [
-  "spontaneously combusted",
-  "melted into a puddle on the sidewalk",
-  "turned into a slug and crawled away",
-];
+    climate: ["cold and rainy", "dark and spooky", "freezing like a horror movie"],
+    temp: ["21", "13", "7"],
+    sound: ["dramatic thunder", "suspicious barking", "a neighbor singing badly"],
+    character: ["Cacique", "The Sleepy Dev", "Bug Master"],
+    action1: ["sleep for 12 hours", "hibernate like a bear", "disappear from reality"],
+    omen: ["bad omen", "JavaScript nightmare", "cosmic bug warning"],
+    deadline: ["midnight", "11:59 PM sharp", "the very last second"],
+    weight: ["300", "150", "999"],
+    finalEvent: [
+      "the Wi-Fi died",
+      "VS Code crashed",
+      "the computer started updating",
+      "chickens with arms started invading your house"
+    ]
+  }
+};
 
 randomize.addEventListener("click", result);
 
 function result() {
-  let newStory = storyText;
-  xItem = randomValueFromArray(insertX);
-  yItem = randomValueFromArray(insertY);
-  zItem = randomValueFromArray(insertZ);
+  const lang = document.querySelector('input[name="lang"]:checked').value;
+  const data = stories[lang];
 
-//   newStory = newStory.replace(/:insertx:/g, xItem);
-  newStory = newStory.replaceAll(":insertx:", xItem);
+  let newStory = data.storyText;
 
-  newStory = newStory.replace(":inserty:", yItem);
-  newStory = newStory.replace(":insertz:", zItem);
-  if (customName.value !== "") {
-    const name = customName.value;
-    newStory = newStory.replace("Bob", name);
+  function replace(tag, array) {
+    newStory = newStory.replace(`:${tag}:`, randomValueFromArray(array));
   }
 
-  if (document.getElementById("uk").checked) {
-    // const weight = Math.round(300);
-    // const temperature =  Math.round(94);
-    const weight = poundsToStone(300);
-    const temperature = fahrenheightToCelsius(94);
-    newStory = newStory.replace("94 fahrenheit", temperature + " celsius");
-    newStory = newStory.replace("300 pounds", weight + " stones");
+  if (lang === "pt") {
+    replace("clima", data.clima);
+    replace("temp", data.temp);
+    replace("som", data.som);
+    if (customName.value !== "") {
+      const name = customName.value;
+      newStory = newStory.replace(":personagem:", name);
+    } else {
+      replace("personagem", data.personagem);
+    }
+    replace("acao1", data.acao1);
+    replace("pressagio", data.pressagio);
+    replace("prazo", data.prazo);
+    replace("peso", data.peso);
+    replace("eventoFinal", data.eventoFinal);
+  }
+
+  if (lang === "en") {
+    replace("climate", data.climate);
+    replace("temp", data.temp);
+    replace("sound", data.sound);
+    if (customName.value !== "") {
+      const name = customName.value;
+      newStory = newStory.replace(":personagem:", name);
+    } else {
+      replace("character", data.character);
+    }
+    replace("action1", data.action1);
+    replace("omen", data.omen);
+    replace("deadline", data.deadline);
+    replace("weight", data.weight);
+    replace("finalEvent", data.finalEvent);
   }
 
   story.textContent = newStory;
