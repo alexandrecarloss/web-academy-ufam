@@ -84,7 +84,7 @@ function result() {
     replace("sound", data.sound);
     if (customName.value !== "") {
       const name = customName.value;
-      newStory = newStory.replace(":personagem:", name);
+      newStory = newStory.replace(":character:", name);
     } else {
       replace("character", data.character);
     }
