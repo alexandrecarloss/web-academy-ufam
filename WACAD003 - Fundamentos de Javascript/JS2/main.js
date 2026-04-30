@@ -39,13 +39,7 @@ function updateDisplayedImage(src, alt) {
 
 /* Wiring up the Darken/Lighten button */
 btn.addEventListener("click", function() {
-    if (btn.classList.contains('dark')){
-        btn.textContent = 'Lighten';
-        overlay.style.backgroundColor = 'rgba(0, 0, 0, .5)'
-        btn.classList.remove('dark')
-    } else {
-        btn.textContent = 'Darken'
-        overlay.style.backgroundColor = 'rgba(0, 0, 0, 0)'
-        btn.classList.add('dark');
-    }
+    const isDark = btn.classList.toggle('dark');
+    btn.textContent = isDark ? 'Lighten' : 'Darken';
+    overlay.style.backgroundColor = isDark ? 'rgba(0, 0, 0, .5)' : 'rgba(0, 0, 0, 0)';
 });
