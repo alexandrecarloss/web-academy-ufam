@@ -5,14 +5,47 @@ const btn = document.querySelector('button');
 const overlay = document.querySelector('.overlay');
 
 /* Declaring the array of image filenames */
+const images = [
+    {src: 'aries.png', alt: 'aries'},
+    {src: 'touro.png', alt: 'touro'},
+    {src: 'gemeos.png', alt: 'gemeos'},
+    {src: 'cancer.png', alt: 'cancer'},
+    {src: 'leao.png', alt: 'leao'}
+];
 
-/* Declaring the alternative text for each image file */
+const baseURL = 'images/';
+for (const image of images){
+    const newImage = document.createElement('img');
+    newImage.setAttribute('src', baseURL + image.src);
+    newImage.setAttribute('alt', image.alt);
+    newImage.setAttribute('tabindex', '0')
+    thumbBar.appendChild(newImage);
 
-/* Looping through images */
+    newImage.addEventListener('click', () => {
+        updateDisplayedImage(baseURL + image.src, image.alt);
+    })
+    
+    newImage.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter'){
+            updateDisplayedImage(baseURL + image.src, image.alt);
+        }
+    })
+}
 
-const newImage = document.createElement('img');
-newImage.setAttribute('src', xxx);
-newImage.setAttribute('alt', xxx);
-thumbBar.appendChild(newImage);
+function updateDisplayedImage(src, alt) {
+    displayedImage.src = src
+    displayedImage.alt = alt
+}
 
 /* Wiring up the Darken/Lighten button */
+btn.addEventListener("click", function() {
+    if (btn.classList.contains('dark')){
+        btn.textContent = 'Lighten';
+        overlay.style.backgroundColor = 'rgba(0, 0, 0, .5)'
+        btn.classList.remove('dark')
+    } else {
+        btn.textContent = 'Darken'
+        overlay.style.backgroundColor = 'rgba(0, 0, 0, 0)'
+        btn.classList.add('dark');
+    }
+});
