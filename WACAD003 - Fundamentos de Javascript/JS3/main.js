@@ -44,20 +44,46 @@ function colorFromTheme(hue, saturation = 70) {
   return `hsl(${hue}, ${saturation}%, ${lightness}%)`;
 }
 
+function randomShape() {
+  const shapes = ["circle", "square", "triangle"];
+  return shapes[random(0, shapes.length - 1)];
+}
+
 class Ball {
-  constructor(x, y, velX, velY, color, size) {
+  constructor(x, y, velX, velY, color, size, shape) {
     this.x = x;
     this.y = y;
     this.velX = velX;
     this.velY = velY;
     this.color = color;
     this.size = size;
+    this.shape = shape;
   }
 
   draw() {
     ctx.beginPath();
     ctx.fillStyle = this.color;
-    ctx.arc(this.x, this.y, this.size, 0, 2 * Math.PI);
+  
+    if (this.shape === "circle") {
+      ctx.arc(this.x, this.y, this.size, 0, 2 * Math.PI);
+    }
+  
+    else if (this.shape === "square") {
+      ctx.rect(
+        this.x - this.size,
+        this.y - this.size,
+        this.size * 2,
+        this.size * 2
+      );
+    }
+  
+    else if (this.shape === "triangle") {
+      ctx.moveTo(this.x, this.y - this.size);
+      ctx.lineTo(this.x - this.size, this.y + this.size);
+      ctx.lineTo(this.x + this.size, this.y + this.size);
+      ctx.closePath();
+    }
+  
     ctx.fill();
   }
 
@@ -102,14 +128,13 @@ const balls = [];
 while (balls.length < 25) {
   const size = random(10, 20);
   const ball = new Ball(
-    // ball position always drawn at least one ball width
-    // away from the edge of the canvas, to avoid drawing errors
     random(0 + size, width - size),
     random(0 + size, height - size),
     random(-7, 7),
     random(-7, 7),
     colorFromTheme(themeHue),
-    size
+    size,
+    randomShape()
   );
 
   balls.push(ball);
