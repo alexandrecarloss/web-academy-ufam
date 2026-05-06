@@ -8,14 +8,40 @@ const height = (canvas.height = window.innerHeight);
 
 // function to generate random number
 
+const colorPicker = document.getElementById("colorPicker");
+
+function hexToHue(hex) {
+  const r = parseInt(hex.substr(1, 2), 16) / 255;
+  const g = parseInt(hex.substr(3, 2), 16) / 255;
+  const b = parseInt(hex.substr(5, 2), 16) / 255;
+
+  const max = Math.max(r, g, b);
+  const min = Math.min(r, g, b);
+  let h;
+
+  if (max === min) h = 0;
+  else if (max === r) h = (60 * (g - b) / (max - min) + 360) % 360;
+  else if (max === g) h = 60 * (b - r) / (max - min) + 120;
+  else h = 60 * (r - g) / (max - min) + 240;
+
+  return h;
+}
+
+let themeHue = 200;
+
+colorPicker.addEventListener("input", () => {
+  themeHue = hexToHue(colorPicker.value);
+});
+
 function random(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
 // function to generate random RGB color value
 
-function randomRGB() {
-  return `rgb(${random(0, 255)},${random(0, 255)},${random(0, 255)})`;
+function colorFromTheme(hue, saturation = 70) {
+  const lightness = random(30, 70);
+  return `hsl(${hue}, ${saturation}%, ${lightness}%)`;
 }
 
 class Ball {
@@ -64,7 +90,7 @@ class Ball {
         const distance = Math.sqrt(dx * dx + dy * dy);
 
         if (distance < this.size + ball.size) {
-          ball.color = this.color = randomRGB();
+          ball.color = this.color = colorFromTheme(themeHue);
         }
       }
     }
@@ -82,7 +108,7 @@ while (balls.length < 25) {
     random(0 + size, height - size),
     random(-7, 7),
     random(-7, 7),
-    randomRGB(),
+    colorFromTheme(themeHue),
     size
   );
 
