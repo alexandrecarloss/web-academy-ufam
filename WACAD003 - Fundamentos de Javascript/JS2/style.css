@@ -229,3 +229,61 @@ button:hover {
     grid-template-columns: repeat(3, 1fr);
   }
 }
+
+@media (max-width: 600px) {
+  .container {
+    padding: 10px 0; 
+    margin: 0 auto;
+  }
+
+  .displayed-img {
+    height: auto;
+    min-height: 300px; 
+    aspect-ratio: 1 / 1; 
+    padding: 10px; 
+    border-radius: 0; 
+  }
+
+  .full-img {
+    border-radius: 0; 
+    border-left: none;
+    border-right: none;
+  }
+  
+  .image-info {
+    position: relative; 
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.9));
+    padding: 15px;
+  }
+
+  .image-info h2 {
+    font-size: 1.8rem;
+  }
+  
+  .thumb-bar {
+    grid-template-columns: repeat(2, 1fr); 
+    gap: 5px; 
+    padding: 0 5px; 
+  }
+
+  .thumb-bar img {
+    height: 180px; 
+    padding: 5px;
+    border-radius: 8px;
+  }
+  
+  h1 {
+    font-size: 1.8rem;
+    margin-top: 10px;
+  }
+}
+
+@media (max-width: 400px) {
+  .thumb-bar {
+    grid-template-columns: 1fr;
+  }
+  
+  .thumb-bar img {
+    height: 250px; 
+  }
+}
