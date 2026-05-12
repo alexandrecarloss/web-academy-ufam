@@ -22,7 +22,14 @@
         const btnAddTask = document.getElementById('btn-adicionar');
         const taskList = document.getElementById('lista-tarefas');
 
-        btnAddTask.addEventListener('click', () => {
+        btnAddTask.addEventListener('click', (addTask));
+        inputNewTask.addEventListener('keypress', (event) => {
+            if (event.key === 'Enter') {
+                addTask();
+            }
+        })
+
+        function addTask() {
             const taskText = inputNewTask.value.trim();
             if (taskText !== '') {
                 const newTaskItem = document.createElement('li');
@@ -30,9 +37,7 @@
                 taskList.appendChild(newTaskItem);
                 inputNewTask.value = '';
             }
-        });
-
-
+        }
     </script>
 </body>
 </html>
