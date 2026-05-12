@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Meu portifório</title>
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
@@ -10,31 +10,95 @@
       integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
       crossorigin="anonymous"
     />
-</head>
-<body>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-5">
+      <div class="container-fluid">
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarTogglerDemo03"
+          aria-controls="navbarTogglerDemo03"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
+          <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link" aria-current="page" href="#">Início</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" href="#">Projetos</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Contato</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
     <h1 class="py-2 px-5 s-0">Meus projetos</h1>
     <div class="container">
-        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4 g-3">
-            <div class="col p-5 border">
-                Espaço do Projeto 1
+      <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4 g-3">
+        <div class="col d-flex">
+          <div class="card h-100 w-100">
+            <img src="img/project.png" class="card-img-top p-3" alt="Imagem do projeto" />
+            <div class="card-body">
+              <h5 class="card-title">Analisador de Dados</h5>
+              <p class="card-text">
+                Processamento de dados em larga escala utilizando Python e bibliotecas de IA
+              </p>
+              <a href="#" class="btn btn-primary w-100 mt-auto">Ver Repositório</a>
             </div>
-            <div class="col p-5 border">
-                Espaço do Projeto 2
-            </div>
-            <div class="col p-5 border">
-                Espaço do Projeto 3
-            </div>
-            <div class="col p-5 border">
-                Espaço do Projeto 4
-            </div>
+          </div>
         </div>
+        <div class="col d-flex">
+          <div class="card h-100 w-100">
+            <img src="img/project.png" class="card-img-top p-3" alt="Imagem do projeto" />
+            <div class="card-body d-flex flex-column">
+              <h5 class="card-title">Aplicativo Mobile</h5>
+              <p class="card-text">
+                Interface moderna para agendamento de consultas médicas em tempo real.
+              </p>
+              <a href="#" class="btn btn-secondary w-100 disabled mt-auto" aria-disabled="true">Em breve</a>
+            </div>
+          </div>
+        </div>
+        <div class="col d-flex">
+          <div class="card h-100 w-100">
+            <img src="img/project.png" class="card-img-top p-3" alt="Imagem do projeto" />
+            <div class="card-body">
+              <h5 class="card-title">E-commerce API</h5>
+              <p class="card-text">
+                Sistema de backend robusto para controle de estoque e pagamento via Pix.
+              </p>
+              <a href="#" class="btn btn-primary w-100 mt-auto">Ver Documentação</a>
+            </div>
+          </div>
+        </div>
+        <div class="col d-flex">
+          <div class="card h-100 w-100">
+            <img src="img/project.png" class="card-img-top p-3" alt="Imagem do projeto" />
+            <div class="card-body">
+              <h5 class="card-title">Predição de Saúde</h5>
+              <p class="card-text">
+                Pesquida acadêmica sobre análise de sensores para predição de riscos cardíacos.
+              </p>
+              <a href="#" class="btn btn-primary w-100 mt-auto">Ver Pesquisa</a>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-
 
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
       integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
       crossorigin="anonymous"
     ></script>
-</body>
+  </body>
 </html>
