@@ -1,0 +1,1 @@
+ES Modules (ou ECMAScript Modules) são o sistema padrão oficial do JavaScript para dividir e reutilizar código em diferentes arquivos. Eles substituem abordagens antigas como o CommonJS (que usa require e module.exports) e são nativamente suportados tanto nos navegadores quanto no Node.js.
