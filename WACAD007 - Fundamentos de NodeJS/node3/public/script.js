@@ -2,18 +2,27 @@ const btnGenerate = document.getElementById("btnGerar");
 const result = document.getElementById("resultado");
 const input = document.getElementById("qtde");
 
-const lorem = `Lorem ipsum dolor `;
-btnGenerate.addEventListener("click", () => {
-    const quantity = Number(input.value);
+btnGenerate.addEventListener("click", async () => {
 
-    result.innerHTML = "";
+    const quantity = Number(input.value);
 
     if (quantity <= 0) {
         result.innerHTML = "<p>Digite um valor válido</p>";
         return;
     }
 
-    for (let i = 0; i< quantity; i++) {
-        result.innerHTML += `<p>${lorem}</p>`;
-    }
-})
+    const response = await fetch(`/lorem?qtd=${quantity}`);
+
+    const data = await response.json();
+
+    result.innerHTML = "";
+
+    const paragraphs = data.texto.split("\n");
+
+    paragraphs.forEach(paragraph => {
+
+        result.innerHTML += `
+            <p>${paragraph}</p>
+        `;
+    });
+});

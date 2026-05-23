@@ -2,13 +2,48 @@ const http = require("http");
 const fs = require("fs").promises;
 const path = require("path");
 const dotenv = require("dotenv");
-dotenv.config({ path: `.env.${process.env.NODE_ENV}` });
+
+const { LoremIpsum } = require("lorem-ipsum");
+
+dotenv.config({
+  path: `.env.${process.env.NODE_ENV}`
+});
+
+const lorem = new LoremIpsum({
+  sentencesPerParagraph: {
+    min: 4,
+    max: 8
+  },
+  wordsPerSentence: {
+    min: 4,
+    max: 16
+  }
+});
 
 const PORT = process.env.PORT || 3000;
 const PUBLIC_PATH = process.env.PUBLIC_PATH;
 
 const server = http.createServer(async (req, res) => {
+
   try {
+    if (req.url.startsWith("/lorem")) {
+
+      const url = new URL(req.url, `http://localhost:${PORT}`);
+
+      const qtd = Number(url.searchParams.get("qtd")) || 1;
+
+      const texto = lorem.generateParagraphs(qtd);
+
+      res.writeHead(200, {
+        "Content-Type": "application/json"
+      });
+
+      return res.end(JSON.stringify({
+        texto
+      }));
+    }
+
+    // arquivos estáticos
     let filePath;
 
     if (req.url === "/") {
@@ -31,16 +66,22 @@ const server = http.createServer(async (req, res) => {
 
     const data = await fs.readFile(filePath);
 
-    res.writeHead(200, {"content-type": `${contentType}; charset=utf-8`
+    res.writeHead(200, {
+      "Content-Type": `${contentType}; charset=utf-8`
     });
 
     res.end(data);
+
   } catch (err) {
-    res.writeHead(404, {"content-type": "text/html; charset=utf-8"});
+
+    res.writeHead(404, {
+      "Content-Type": "text/html"
+    });
+
     res.end("<h1>Arquivo não encontrado</h1>");
   }
 });
 
 server.listen(PORT, () => {
-  console.log(`Servidor rodando em: http://localhost:${PORT}`);
+  console.log(`Servidor rodando em http://localhost:${PORT}`);
 });

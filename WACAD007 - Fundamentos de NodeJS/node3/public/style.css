@@ -21,6 +21,11 @@ body {
     padding: 20px;
 }
 
+main {
+    padding: 20px;
+    margin: 0 20px;
+}
+
 #qtde {
     padding: 10px;
     font-size: 1em;
