@@ -1,0 +1,1 @@
+CommonJS é um padrão de sistema de módulos originalmente criado para estruturar código JavaScript fora do ambiente do navegador. Ele se tornou o formato de módulo padrão e histórico do Node.js, utilizando as funções require() para importar dependências e module.exports para exportar dados e funcionalidades. 
