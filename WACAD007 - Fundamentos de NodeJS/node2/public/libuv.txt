@@ -1,0 +1,1 @@
+libuv é uma biblioteca em C, de código aberto e multiplataforma, focada em fornecer E/S (Entrada/Saída) assíncrona baseada em um laço de eventos (Event Loop). Ela é mais conhecida como o motor principal que impulsiona o Node.js, mas também é utilizada por outros projetos robustos, como Julia e NeoVim. 
