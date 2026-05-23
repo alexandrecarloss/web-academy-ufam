@@ -43,7 +43,6 @@ const server = http.createServer(async (req, res) => {
       }));
     }
 
-    // arquivos estáticos
     let filePath;
 
     if (req.url === "/") {
