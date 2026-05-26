@@ -1,0 +1,155 @@
+:root {
+  --primary: #4f46e5;
+  --primary-hover: #4338ca;
+  --background: #f3f4f6;
+  --card-bg: #ffffff;
+  --text: #1f2937;
+  --danger: #ef4444;
+  --danger-hover: #dc2626;
+  --edit: #f59e0b;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: var(--background);
+  color: var(--text);
+  margin: 0;
+  padding: 20px;
+}
+
+.container {
+  max-width: 600px;
+  margin: 0 auto;
+  background: var(--card-bg);
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+h1, h2 {
+  text-align: center;
+  margin-top: 0;
+}
+
+hr {
+  border: 0;
+  height: 1px;
+  background: #e5e7eb;
+  margin: 30px 0;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 5px;
+  font-size: 14px;
+}
+
+input[type="text"],
+input[type="datetime-local"],
+textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  box-sizing: border-box;
+  font-size: 14px;
+}
+
+button {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.2s;
+  margin-bottom: 10px;
+}
+
+#btn-salvar {
+  background-color: var(--primary);
+  color: white;
+}
+
+#btn-salvar:hover {
+  background-color: var(--primary-hover);
+}
+
+#btn-cancelar {
+  background-color: #9ca3af;
+  color: white;
+}
+
+.hidden {
+  display: none;
+}
+
+/* Estilização dos itens da lista */
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+.lembrete-item {
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 15px;
+  position: relative;
+}
+
+.lembrete-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 8px;
+}
+
+.lembrete-titulo {
+  font-weight: bold;
+  font-size: 18px;
+  margin: 0;
+}
+
+.lembrete-datas {
+  font-size: 11px;
+  color: #6b7280;
+}
+
+.lembrete-descricao {
+  font-size: 14px;
+  color: #4b5563;
+  margin: 5px 0 15px 0;
+}
+
+.lembrete-acoes {
+  display: flex;
+  gap: 10px;
+}
+
+.lembrete-acoes button {
+  padding: 6px 12px;
+  font-size: 12px;
+  width: auto;
+  margin: 0;
+}
+
+.btn-editar {
+  background-color: var(--edit);
+  color: white;
+}
+
+.btn-excluir {
+  background-color: var(--danger);
+  color: white;
+}
+
+.btn-excluir:hover {
+  background-color: var(--danger-hover);
+}
