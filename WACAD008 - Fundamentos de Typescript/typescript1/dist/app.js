@@ -33,40 +33,55 @@ const inputId = document.getElementById('lembrete-id');
 const inputTitulo = document.getElementById('titulo');
 const inputDataLimite = document.getElementById('data-limite');
 const inputDescricao = document.getElementById('descricao');
-const listaUl = document.getElementById('lista-lembretes');
+const listaContainer = document.getElementById('lista-lembretes');
 const btnSalvar = document.getElementById('btn-salvar');
 const btnCancelar = document.getElementById('btn-cancelar');
 function renderizarLembretes() {
-    listaUl.innerHTML = '';
+    listaContainer.innerHTML = '';
     const todos = gerenciador.listarTodos();
     if (todos.length === 0) {
-        listaUl.innerHTML = '<p style="text-align:center; color:#6b7280;">Nenhum lembrete para exibir.</p>';
+        listaContainer.innerHTML = `
+      <div class="text-center py-5 text-muted border rounded bg-white shadow-sm">
+        <p class="mb-0 fs-5">Nenhum lembrete cadastrado ainda.</p>
+        <small>Use o formulário acima para começar!</small>
+      </div>
+    `;
         return;
     }
     todos.forEach(lembrete => {
-        const li = document.createElement('li');
-        li.className = 'lembrete-item';
+        const card = document.createElement('div');
+        card.className = 'card shadow-sm border-start border-primary border-4 animate-fade-in';
         const dataInsFormatada = lembrete.dataInsercao.toLocaleString('pt-BR');
         const dataLimFormatada = lembrete.dataLimite
             ? new Date(lembrete.dataLimite).toLocaleString('pt-BR')
             : 'Não definida';
-        li.innerHTML = `
-      <div class="lembrete-header">
-        <h3 class="lembrete-titulo">${lembrete.titulo}</h3>
-        <div class="lembrete-datas">
-          <strong>Criado em:</strong> ${dataInsFormatada}<br>
-          <strong>Prazo:</strong> ${dataLimFormatada}
+        card.innerHTML = `
+      <div class="card-body p-3">
+        <div class="d-flex justify-content-between align-items-start gap-3">
+          <div>
+            <h3 class="h5 card-title mb-1 text-dark fw-bold">${lembrete.titulo}</h3>
+            <p class="card-text text-secondary small mb-3">${lembrete.descricao ?? '<span class="text-muted text-opacity-50"><i>Sem descrição.</i></span>'}</p>
+            
+            <div class="d-flex flex-wrap gap-2 text-muted" style="font-size: 0.8rem;">
+              <span class="badge bg-light text-dark border">
+                <strong>Criado em:</strong> ${dataInsFormatada}
+              </span>
+              <span class="badge ${lembrete.dataLimite ? 'bg-warning-subtle text-warning-focus' : 'bg-light text-muted'} border">
+                <strong>Prazo:</strong> ${dataLimFormatada}
+              </span>
+            </div>
+          </div>
+          
+          <div class="d-flex gap-1">
+            <button class="btn btn-sm btn-outline-warning btn-editar" data-id="${lembrete.id}" title="Editar">Editar</button>
+            <button class="btn btn-sm btn-outline-danger btn-excluir" data-id="${lembrete.id}" title="Excluir">Excluir</button>
+          </div>
         </div>
       </div>
-      <p class="lembrete-descricao">${lembrete.descricao ?? '<i>Sem descrição.</i>'}</p>
-      <div class="lembrete-acoes">
-        <button class="btn-editar" data-id="${lembrete.id}">Editar</button>
-        <button class="btn-excluir" data-id="${lembrete.id}">Excluir</button>
-      </div>
     `;
-        li.querySelector('.btn-editar')?.addEventListener('click', () => carregarParaEdicao(lembrete.id));
-        li.querySelector('.btn-excluir')?.addEventListener('click', () => excluirLembrete(lembrete.id));
-        listaUl.appendChild(li);
+        card.querySelector('.btn-editar')?.addEventListener('click', () => carregarParaEdicao(lembrete.id));
+        card.querySelector('.btn-excluir')?.addEventListener('click', () => excluirLembrete(lembrete.id));
+        listaContainer.appendChild(card);
     });
 }
 form.addEventListener('submit', (e) => {
@@ -101,7 +116,8 @@ function carregarParaEdicao(id) {
         inputDataLimite.value = '';
     }
     btnSalvar.textContent = "Salvar Alterações";
-    btnCancelar.classList.remove('hidden');
+    btnSalvar.className = "btn btn-warning px-4 text-white";
+    btnCancelar.classList.remove('d-none');
 }
 function excluirLembrete(id) {
     if (confirm("Tem certeza que deseja apagar este lembrete?")) {
@@ -116,7 +132,8 @@ function resetarFormulario() {
     form.reset();
     inputId.value = '';
     btnSalvar.textContent = "Adicionar Lembrete";
-    btnCancelar.classList.add('hidden');
+    btnSalvar.className = "btn btn-primary px-4";
+    btnCancelar.classList.add('d-none');
 }
 renderizarLembretes();
 export {};
