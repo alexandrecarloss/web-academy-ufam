@@ -12,6 +12,7 @@ export interface Lembrete {
     id: string;
     titulo: string;
     dataInsercao: Date;
+    usuarioId: string;
     dataLimite?: Date | undefined;
     descricao?: string | undefined;
 }

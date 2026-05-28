@@ -97,6 +97,10 @@ class ServicoAutenticacao {
   public obterUsuarioAtual(): string | undefined {
     return this.sessaoAtual?.username;
   }
+
+  public obterIdUsuarioAtual(): string | undefined {
+    return this.sessaoAtual?.usuarioId;
+  }
 }
 
 const auth = new ServicoAutenticacao();
@@ -109,6 +113,7 @@ class GerenciadorLembretes {
       id: crypto.randomUUID(),
       titulo: dados.titulo,
       descricao: dados.descricao,
+      usuarioId: auth.estaAutenticado() ? auth.obterIdUsuarioAtual() ?? "desconhecido": "desconhecido",
       dataLimite: dados.dataLimite,
       dataInsercao: new Date(),
     };
@@ -118,6 +123,10 @@ class GerenciadorLembretes {
 
   public listarTodos(): Lembrete[] {
     return this.lembretes;
+  }
+
+  public listarPorUsuario(usuarioId: string): Lembrete[] {
+    return this.lembretes.filter((L) => L.usuarioId === usuarioId);
   }
 
   public buscarPorId(id: string): Lembrete | undefined {
@@ -168,7 +177,6 @@ function gerenciarVisibilidadeTelas(): void {
 formLogin.addEventListener("submit", (e: Event) => {
   e.preventDefault();
   msgErro.classList.add("d-none");
-  console.log("Tentando login com:", inputUser.value, inputPass.value);
 
   const sucesso = auth.login(inputUser.value, inputPass.value);
 
@@ -183,7 +191,6 @@ formLogin.addEventListener("submit", (e: Event) => {
 
 btnCadastrar.addEventListener("click", (e: Event) => {
   e.preventDefault();
-  console.log("Tentando cadastrar com:", inputUser.value, inputPass.value);
   msgErro.classList.add("d-none");
 
   const username = inputUser.value;
@@ -225,7 +232,7 @@ const btnCancelar = document.getElementById(
 
 function renderizarLembretes(): void {
   listaContainer.innerHTML = "";
-  const todos = gerenciador.listarTodos();
+  const todos = gerenciador.listarPorUsuario(auth.obterIdUsuarioAtual() ?? "desconhecido");
 
   if (todos.length === 0) {
     listaContainer.innerHTML = `
@@ -302,6 +309,7 @@ form.addEventListener("submit", (e: Event) => {
   const dados: CriarLembreteInput = {
     titulo: inputTitulo.value,
     descricao: inputDescricao.value ? inputDescricao.value : undefined,
+    usuarioId: auth.estaAutenticado() ? auth.obterIdUsuarioAtual() ?? "desconhecido": "desconhecido",
     dataLimite: inputDataLimite.value
       ? new Date(inputDataLimite.value)
       : undefined,

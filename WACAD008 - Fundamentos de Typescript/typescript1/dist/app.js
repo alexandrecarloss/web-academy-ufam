@@ -66,6 +66,9 @@ class ServicoAutenticacao {
     obterUsuarioAtual() {
         return this.sessaoAtual?.username;
     }
+    obterIdUsuarioAtual() {
+        return this.sessaoAtual?.usuarioId;
+    }
 }
 const auth = new ServicoAutenticacao();
 class GerenciadorLembretes {
@@ -75,6 +78,7 @@ class GerenciadorLembretes {
             id: crypto.randomUUID(),
             titulo: dados.titulo,
             descricao: dados.descricao,
+            usuarioId: auth.estaAutenticado() ? auth.obterIdUsuarioAtual() ?? "desconhecido" : "desconhecido",
             dataLimite: dados.dataLimite,
             dataInsercao: new Date(),
         };
@@ -83,6 +87,9 @@ class GerenciadorLembretes {
     }
     listarTodos() {
         return this.lembretes;
+    }
+    listarPorUsuario(usuarioId) {
+        return this.lembretes.filter((L) => L.usuarioId === usuarioId);
     }
     buscarPorId(id) {
         return this.lembretes.find((l) => l.id === id);
@@ -122,7 +129,6 @@ function gerenciarVisibilidadeTelas() {
 formLogin.addEventListener("submit", (e) => {
     e.preventDefault();
     msgErro.classList.add("d-none");
-    console.log("Tentando login com:", inputUser.value, inputPass.value);
     const sucesso = auth.login(inputUser.value, inputPass.value);
     if (sucesso) {
         formLogin.reset();
@@ -135,7 +141,6 @@ formLogin.addEventListener("submit", (e) => {
 });
 btnCadastrar.addEventListener("click", (e) => {
     e.preventDefault();
-    console.log("Tentando cadastrar com:", inputUser.value, inputPass.value);
     msgErro.classList.add("d-none");
     const username = inputUser.value;
     const senha = inputPass.value;
@@ -163,7 +168,7 @@ const btnSalvar = document.getElementById("btn-salvar");
 const btnCancelar = document.getElementById("btn-cancelar");
 function renderizarLembretes() {
     listaContainer.innerHTML = "";
-    const todos = gerenciador.listarTodos();
+    const todos = gerenciador.listarPorUsuario(auth.obterIdUsuarioAtual() ?? "desconhecido");
     if (todos.length === 0) {
         listaContainer.innerHTML = `
       <div class="text-center py-5 text-muted border rounded bg-white shadow-sm">
@@ -222,6 +227,7 @@ form.addEventListener("submit", (e) => {
     const dados = {
         titulo: inputTitulo.value,
         descricao: inputDescricao.value ? inputDescricao.value : undefined,
+        usuarioId: auth.estaAutenticado() ? auth.obterIdUsuarioAtual() ?? "desconhecido" : "desconhecido",
         dataLimite: inputDataLimite.value
             ? new Date(inputDataLimite.value)
             : undefined,
