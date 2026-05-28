@@ -11,66 +11,140 @@
     <link rel="stylesheet" href="style.css" />
   </head>
   <body class="bg-light py-5">
-    <div class="container" style="max-width: 700px;">
-      
-      <div class="card shadow-sm mb-4">
+    <div class="container" style="max-width: 700px">
+      <div id="tela-login" class="card shadow-sm">
         <div class="card-body p-4">
-          <h1 class="card-title text-center h3 mb-4">Minha Lista de Tarefas</h1>
-
-          <form id="form-lembrete">
-            <input type="hidden" id="lembrete-id" />
-
-            <div class="row g-3">
-              <div class="col-md-7">
-                <label for="titulo" class="form-label fw-semibold">Título *</label>
-                <input
-                  type="text"
-                  id="titulo"
-                  class="form-control"
-                  required
-                  placeholder="Estudar TypeScript"
-                />
-              </div>
-
-              <div class="col-md-5">
-                <label for="data-limite" class="form-label fw-semibold">Data Limite (Opcional)</label>
-                <input type="datetime-local" id="data-limite" class="form-control" />
-              </div>
-
-              <div class="col-12">
-                <label for="descricao" class="form-label fw-semibold">Descrição (Opcional)</label>
-                <textarea
-                  id="descricao"
-                  class="form-control"
-                  rows="3"
-                  placeholder="Detalhes da atividade..."
-                ></textarea>
-              </div>
-
-              <div class="col-12 d-flex gap-2 justify-content-end mt-4">
-                <button type="button" id="btn-cancelar" class="btn btn-secondary d-none">
-                  Cancelar Edição
-                </button>
-                <button type="submit" id="btn-salvar" class="btn btn-primary px-4">
-                  Adicionar Lembrete
-                </button>
-              </div>
+          <h2 class="text-center h4 mb-4">Entrar no Sistema</h2>
+          <form id="form-login">
+            <div class="mb-3">
+              <label for="login-username" class="form-label fw-semibold"
+                >Usuário</label
+              >
+              <input
+                type="text"
+                id="login-username"
+                class="form-control"
+                required
+              />
             </div>
+            <div class="mb-3">
+              <label for="login-senha" class="form-label fw-semibold"
+                >Senha</label
+              >
+              <input
+                type="password"
+                id="login-senha"
+                class="form-control"
+                required
+              />
+            </div>
+            <div
+              id="login-erro"
+              class="alert alert-danger d-none small p-2"
+              role="alert"
+            >
+              Usuário ou senha incorretos!
+            </div>
+            <button type="submit" class="btn btn-primary w-100">
+              Acessar Lembretes
+            </button>
+            <button
+              type="button"
+              id="btn-cadastrar"
+              class="btn btn-secondary w-100 my-3"
+              formnovalidate
+            >
+              Cadastrar Novo Usuário
+            </button>
           </form>
         </div>
       </div>
 
-      <div class="d-flex justify-content-between align-items-center mb-3 mt-5">
-        <h2 class="h4 m-0 text-secondary">Tarefas Pendentes</h2>
+      <div id="tela-app" class="d-none">
+        <div
+          class="d-flex justify-content-between align-items-center mb-4 bg-white p-3 rounded shadow-sm"
+        >
+          <span class="fs-5 fw-medium"
+            >Olá, <strong id="usuario-logado">...</strong>!</span
+          >
+          <button id="btn-logout" class="btn btn-sm btn-outline-danger">
+            Sair / Logout
+          </button>
+        </div>
+
+        <div class="card shadow-sm mb-4">
+          <div class="card-body p-4">
+            <form id="form-lembrete">
+              <input type="hidden" id="lembrete-id" />
+
+              <div class="row g-3">
+                <div class="col-md-7">
+                  <label for="titulo" class="form-label fw-semibold"
+                    >Título *</label
+                  >
+                  <input
+                    type="text"
+                    id="titulo"
+                    class="form-control"
+                    required
+                    placeholder="Estudar TypeScript"
+                  />
+                </div>
+
+                <div class="col-md-5">
+                  <label for="data-limite" class="form-label fw-semibold"
+                    >Data Limite (Opcional)</label
+                  >
+                  <input
+                    type="datetime-local"
+                    id="data-limite"
+                    class="form-control"
+                  />
+                </div>
+
+                <div class="col-12">
+                  <label for="descricao" class="form-label fw-semibold"
+                    >Descrição (Opcional)</label
+                  >
+                  <textarea
+                    id="descricao"
+                    class="form-control"
+                    rows="3"
+                    placeholder="Detalhes da atividade..."
+                  ></textarea>
+                </div>
+
+                <div class="col-12 d-flex gap-2 justify-content-end mt-4">
+                  <button
+                    type="button"
+                    id="btn-cancelar"
+                    class="btn btn-secondary d-none"
+                  >
+                    Cancelar Edição
+                  </button>
+                  <button
+                    type="submit"
+                    id="btn-salvar"
+                    class="btn btn-primary px-4"
+                  >
+                    Adicionar Lembrete
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <div
+          class="d-flex justify-content-between align-items-center mb-3 mt-5"
+        >
+          <h2 class="h4 m-0 text-secondary">Tarefas Pendentes</h2>
+        </div>
+
+        <div id="lista-lembretes" class="d-flex flex-column gap-3"></div>
       </div>
-      
-      <div id="lista-lembretes" class="d-flex flex-column gap-3"></div>
-
     </div>
-
-    <script
-      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-    ></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="dist/app.js" type="module"></script>
   </body>
 </html>

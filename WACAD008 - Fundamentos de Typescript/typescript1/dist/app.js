@@ -1,3 +1,73 @@
+class ServicoAutenticacao {
+    usuarios = [];
+    sessaoAtual = null;
+    constructor() {
+        this.carregarUsuarios();
+        if (this.usuarios.length === 0) {
+            this.usuarios.push({
+                id: crypto.randomUUID(),
+                username: "admin",
+                senhaPlanejada: "123",
+            });
+            this.salvarUsuarios();
+        }
+    }
+    carregarUsuarios() {
+        const dados = localStorage.getItem("app_usuarios");
+        if (dados) {
+            this.usuarios = JSON.parse(dados);
+        }
+    }
+    salvarUsuarios() {
+        localStorage.setItem("app_usuarios", JSON.stringify(this.usuarios));
+    }
+    cadastrar(usernameInput, senhaInput) {
+        const usuarioLimpo = usernameInput.trim();
+        if (!usuarioLimpo || !senhaInput) {
+            return { sucesso: false, mensagem: "Preencha todos os campos!" };
+        }
+        const usuarioExiste = this.usuarios.some((u) => u.username.toLowerCase() === usuarioLimpo.toLowerCase());
+        if (usuarioExiste) {
+            return {
+                sucesso: false,
+                mensagem: "Este nome de usuário já está cadastrado!",
+            };
+        }
+        this.usuarios.push({
+            id: crypto.randomUUID(),
+            username: usuarioLimpo,
+            senhaPlanejada: senhaInput,
+        });
+        this.salvarUsuarios();
+        return {
+            sucesso: true,
+            mensagem: "Usuário cadastrado com sucesso! Agora você já pode fazer login.",
+        };
+    }
+    login(usernameInput, senhaInput) {
+        const encontrado = this.usuarios.find((u) => u.username.toLowerCase() === usernameInput.trim().toLowerCase() &&
+            u.senhaPlanejada === senhaInput);
+        if (encontrado) {
+            this.sessaoAtual = {
+                usuarioId: encontrado.id,
+                username: encontrado.username,
+                tokenSimulado: crypto.randomUUID(),
+            };
+            return true;
+        }
+        return false;
+    }
+    logout() {
+        this.sessaoAtual = null;
+    }
+    estaAutenticado() {
+        return this.sessaoAtual !== null;
+    }
+    obterUsuarioAtual() {
+        return this.sessaoAtual?.username;
+    }
+}
+const auth = new ServicoAutenticacao();
 class GerenciadorLembretes {
     lembretes = [];
     adicionar(dados) {
@@ -6,7 +76,7 @@ class GerenciadorLembretes {
             titulo: dados.titulo,
             descricao: dados.descricao,
             dataLimite: dados.dataLimite,
-            dataInsercao: new Date()
+            dataInsercao: new Date(),
         };
         this.lembretes.push(novo);
         return novo;
@@ -15,7 +85,7 @@ class GerenciadorLembretes {
         return this.lembretes;
     }
     buscarPorId(id) {
-        return this.lembretes.find(l => l.id === id);
+        return this.lembretes.find((l) => l.id === id);
     }
     editar(id, novosDados) {
         const lembrete = this.buscarPorId(id);
@@ -24,20 +94,75 @@ class GerenciadorLembretes {
         }
     }
     excluir(id) {
-        this.lembretes = this.lembretes.filter(l => l.id !== id);
+        this.lembretes = this.lembretes.filter((l) => l.id !== id);
     }
 }
 const gerenciador = new GerenciadorLembretes();
-const form = document.getElementById('form-lembrete');
-const inputId = document.getElementById('lembrete-id');
-const inputTitulo = document.getElementById('titulo');
-const inputDataLimite = document.getElementById('data-limite');
-const inputDescricao = document.getElementById('descricao');
-const listaContainer = document.getElementById('lista-lembretes');
-const btnSalvar = document.getElementById('btn-salvar');
-const btnCancelar = document.getElementById('btn-cancelar');
+const telaLogin = document.getElementById("tela-login");
+const telaApp = document.getElementById("tela-app");
+const btnCadastrar = document.getElementById("btn-cadastrar");
+const formLogin = document.getElementById("form-login");
+const inputUser = document.getElementById("login-username");
+const inputPass = document.getElementById("login-senha");
+const msgErro = document.getElementById("login-erro");
+const txtUsuarioLogado = document.getElementById("usuario-logado");
+const btnLogout = document.getElementById("btn-logout");
+function gerenciarVisibilidadeTelas() {
+    if (auth.estaAutenticado()) {
+        telaLogin.classList.add("d-none");
+        telaApp.classList.remove("d-none");
+        txtUsuarioLogado.textContent = auth.obterUsuarioAtual() ?? "";
+        renderizarLembretes();
+    }
+    else {
+        telaLogin.classList.remove("d-none");
+        telaApp.classList.add("d-none");
+    }
+}
+formLogin.addEventListener("submit", (e) => {
+    e.preventDefault();
+    msgErro.classList.add("d-none");
+    console.log("Tentando login com:", inputUser.value, inputPass.value);
+    const sucesso = auth.login(inputUser.value, inputPass.value);
+    if (sucesso) {
+        formLogin.reset();
+        gerenciarVisibilidadeTelas();
+    }
+    else {
+        msgErro.textContent = "Usuário ou senha incorretos!";
+        msgErro.classList.remove("d-none");
+    }
+});
+btnCadastrar.addEventListener("click", (e) => {
+    e.preventDefault();
+    console.log("Tentando cadastrar com:", inputUser.value, inputPass.value);
+    msgErro.classList.add("d-none");
+    const username = inputUser.value;
+    const senha = inputPass.value;
+    const resultado = auth.cadastrar(username, senha);
+    if (resultado.sucesso) {
+        alert(resultado.mensagem);
+        formLogin.reset();
+    }
+    else {
+        msgErro.textContent = resultado.mensagem;
+        msgErro.classList.remove("d-none");
+    }
+});
+btnLogout.addEventListener("click", () => {
+    auth.logout();
+    gerenciarVisibilidadeTelas();
+});
+const form = document.getElementById("form-lembrete");
+const inputId = document.getElementById("lembrete-id");
+const inputTitulo = document.getElementById("titulo");
+const inputDataLimite = document.getElementById("data-limite");
+const inputDescricao = document.getElementById("descricao");
+const listaContainer = document.getElementById("lista-lembretes");
+const btnSalvar = document.getElementById("btn-salvar");
+const btnCancelar = document.getElementById("btn-cancelar");
 function renderizarLembretes() {
-    listaContainer.innerHTML = '';
+    listaContainer.innerHTML = "";
     const todos = gerenciador.listarTodos();
     if (todos.length === 0) {
         listaContainer.innerHTML = `
@@ -48,49 +173,58 @@ function renderizarLembretes() {
     `;
         return;
     }
-    todos.forEach(lembrete => {
-        const card = document.createElement('div');
-        card.className = 'card shadow-sm border-start border-primary border-4 animate-fade-in';
-        const dataInsFormatada = lembrete.dataInsercao.toLocaleString('pt-BR');
+    todos.forEach((lembrete) => {
+        const card = document.createElement("div");
+        card.className = "card shadow-sm border-start border-primary border-4 mb-3";
+        const dataInsFormatada = lembrete.dataInsercao.toLocaleString("pt-BR");
         const dataLimFormatada = lembrete.dataLimite
-            ? new Date(lembrete.dataLimite).toLocaleString('pt-BR')
-            : 'Não definida';
+            ? new Date(lembrete.dataLimite).toLocaleString("pt-BR")
+            : "Não definida";
         card.innerHTML = `
       <div class="card-body p-3">
         <div class="d-flex justify-content-between align-items-start gap-3">
           <div>
             <h3 class="h5 card-title mb-1 text-dark fw-bold">${lembrete.titulo}</h3>
-            <p class="card-text text-secondary small mb-3">${lembrete.descricao ?? '<span class="text-muted text-opacity-50"><i>Sem descrição.</i></span>'}</p>
+            <p class="card-text text-secondary small mb-3">${lembrete.descricao ??
+            '<span class="text-muted text-opacity-50"><i>Sem descrição.</i></span>'}</p>
             
             <div class="d-flex flex-wrap gap-2 text-muted" style="font-size: 0.8rem;">
               <span class="badge bg-light text-dark border">
                 <strong>Criado em:</strong> ${dataInsFormatada}
               </span>
-              <span class="badge ${lembrete.dataLimite ? 'bg-warning-subtle text-warning-focus' : 'bg-light text-muted'} border">
+              <span class="badge ${lembrete.dataLimite
+            ? "bg-warning-subtle text-warning-focus"
+            : "bg-light text-muted"} border">
                 <strong>Prazo:</strong> ${dataLimFormatada}
               </span>
             </div>
           </div>
           
           <div class="d-flex gap-1">
-            <button class="btn btn-sm btn-outline-warning btn-editar" data-id="${lembrete.id}" title="Editar">Editar</button>
-            <button class="btn btn-sm btn-outline-danger btn-excluir" data-id="${lembrete.id}" title="Excluir">Excluir</button>
+            <button class="btn btn-sm btn-outline-warning btn-editar" data-id="${lembrete.id}">Editar</button>
+            <button class="btn btn-sm btn-outline-danger btn-excluir" data-id="${lembrete.id}">Excluir</button>
           </div>
         </div>
       </div>
     `;
-        card.querySelector('.btn-editar')?.addEventListener('click', () => carregarParaEdicao(lembrete.id));
-        card.querySelector('.btn-excluir')?.addEventListener('click', () => excluirLembrete(lembrete.id));
+        card
+            .querySelector(".btn-editar")
+            ?.addEventListener("click", () => carregarParaEdicao(lembrete.id));
+        card
+            .querySelector(".btn-excluir")
+            ?.addEventListener("click", () => excluirLembrete(lembrete.id));
         listaContainer.appendChild(card);
     });
 }
-form.addEventListener('submit', (e) => {
+form.addEventListener("submit", (e) => {
     e.preventDefault();
     const idAtual = inputId.value;
     const dados = {
         titulo: inputTitulo.value,
         descricao: inputDescricao.value ? inputDescricao.value : undefined,
-        dataLimite: inputDataLimite.value ? new Date(inputDataLimite.value) : undefined
+        dataLimite: inputDataLimite.value
+            ? new Date(inputDataLimite.value)
+            : undefined,
     };
     if (idAtual) {
         gerenciador.editar(idAtual, dados);
@@ -107,17 +241,17 @@ function carregarParaEdicao(id) {
         return;
     inputId.value = lembrete.id;
     inputTitulo.value = lembrete.titulo;
-    inputDescricao.value = lembrete.descricao ?? '';
+    inputDescricao.value = lembrete.descricao ?? "";
     if (lembrete.dataLimite) {
         const dataIso = new Date(lembrete.dataLimite).toISOString().slice(0, 16);
         inputDataLimite.value = dataIso;
     }
     else {
-        inputDataLimite.value = '';
+        inputDataLimite.value = "";
     }
     btnSalvar.textContent = "Salvar Alterações";
     btnSalvar.className = "btn btn-warning px-4 text-white";
-    btnCancelar.classList.remove('d-none');
+    btnCancelar.classList.remove("d-none");
 }
 function excluirLembrete(id) {
     if (confirm("Tem certeza que deseja apagar este lembrete?")) {
@@ -127,14 +261,14 @@ function excluirLembrete(id) {
             resetarFormulario();
     }
 }
-btnCancelar.addEventListener('click', resetarFormulario);
+btnCancelar.addEventListener("click", resetarFormulario);
 function resetarFormulario() {
     form.reset();
-    inputId.value = '';
+    inputId.value = "";
     btnSalvar.textContent = "Adicionar Lembrete";
     btnSalvar.className = "btn btn-primary px-4";
-    btnCancelar.classList.add('d-none');
+    btnCancelar.classList.add("d-none");
 }
-renderizarLembretes();
+gerenciarVisibilidadeTelas();
 export {};
 //# sourceMappingURL=app.js.map
