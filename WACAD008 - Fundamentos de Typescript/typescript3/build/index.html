@@ -1,225 +1,265 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Shopping System - Generics & Classes</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
-      rel="stylesheet"/>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"rel="stylesheet"/>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"
+      rel="stylesheet"
+    />
     <style>
-        body {
-            background-color: #f8f9fa;
-        }
-        .sticky-display {
-            position: sticky;
-            top: 20px;
-        }
-        .product-card {
-            transition: transform 0.2s;
-        }
-        .product-card:hover {
-            transform: translateY(-2px);
-        }
+      body {
+        background-color: #f8f9fa;
+      }
+      .sticky-display {
+        position: sticky;
+        top: 20px;
+      }
+      .product-card {
+        transition: transform 0.2s;
+      }
+      .product-card:hover {
+        transform: translateY(-2px);
+      }
     </style>
-</head>
-<body>
-
+  </head>
+  <body>
     <nav class="navbar navbar-dark bg-dark mb-4 shadow-sm">
-        <div class="container">
-            <span class="navbar-brand mb-0 h1">
-                <i class="bi bi-cart4 me-2"></i>Generic Shop System
-            </span>
-            <span class="badge bg-secondary">Exercício: Classes & Interfaces</span>
-        </div>
+      <div class="container">
+        <span class="navbar-brand mb-0 h1">
+          <i class="bi bi-cart4 me-2"></i>Generic Shop System
+        </span>
+        <span class="badge bg-secondary">Exercício: Classes & Interfaces</span>
+      </div>
     </nav>
 
     <div class="container mb-5">
-        <div class="row g-4">
-            
-            <div class="col-lg-4">
-                <div class="card shadow-sm border-0 mb-4">
-                    <div class="card-header bg-primary text-white py-3">
-                        <h5 class="card-title mb-0"><i class="bi bi-plus-circle me-2"></i>Inserir Produto</h5>
-                    </div>
-                    <div class="card-body">
-                        <div class="mb-3">
-                            <label for="productType" class="form-label fw-bold">Tipo de Produto</label>
-                            <select class="form-select" id="productType" onchange="toggleFields()">
-                                <option value="tv">Televisão (TV)</option>
-                                <option value="celular" selected>Celular</option>
-                                <option value="bicicleta">Bicicleta</option>
-                            </select>
-                        </div>
-
-                        <hr>
-
-                        <div class="mb-3">
-                            <label class="form-label">Modelo</label>
-                            <input type="text" class="form-control" placeholder="Ex: Galaxy S24, Aro 29" required>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Fabricante</label>
-                            <input type="text" class="form-control" placeholder="Ex: Samsung, Caloi" required>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Valor (R$)</label>
-                            <input type="number" class="form-control" placeholder="0.00" step="0.01" required>
-                        </div>
-
-                        <div id="fields-tv" class="d-none">
-                            <div class="mb-3">
-                                <label class="form-label">Resolução</label>
-                                <input type="text" class="form-control" placeholder="Ex: 4K Ultra HD">
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">Tamanho (Polegadas)</label>
-                                <input type="number" class="form-control" placeholder="Ex: 55">
-                            </div>
-                        </div>
-
-                        <div id="fields-celular">
-                            <div class="mb-3">
-                                <label class="form-label">Memória (RAM/Armazenamento)</label>
-                                <input type="text" class="form-control" placeholder="Ex: 8GB / 256GB">
-                            </div>
-                        </div>
-
-                        <div id="fields-bicicleta" class="d-none">
-                            <div class="mb-3">
-                                <label class="form-label">Tamanho do Aro</label>
-                                <input type="number" class="form-control" placeholder="Ex: 29">
-                            </div>
-                        </div>
-
-                        <button type="button" class="btn btn-success w-100 mt-3">
-                            <i class="bi bi-cart-plus-fill me-2"></i>Adicionar ao Carrinho
-                        </button>
-                    </div>
-                </div>
+      <div class="row g-4">
+        <div class="col-lg-4">
+          <div class="card shadow-sm border-0 mb-4">
+            <div class="card-header bg-primary text-white py-3">
+              <h5 class="card-title mb-0">
+                <i class="bi bi-plus-circle me-2"></i>Inserir Produto
+              </h5>
             </div>
+            <div class="card-body">
+              <div class="mb-3">
+                <label for="productType" class="form-label fw-bold"
+                  >Tipo de Produto</label
+                >
+                <select
+                  class="form-select"
+                  id="productType"
+                  onchange="toggleFields()"
+                >
+                  <option value="tv">Televisão (TV)</option>
+                  <option value="celular" selected>Celular</option>
+                  <option value="bicicleta">Bicicleta</option>
+                </select>
+              </div>
 
-            <div class="col-lg-8">
-                <div class="row g-4">
-                    
-                    <div class="col-12 sticky-display" style="z-index: 1020;">
-                        <div class="card shadow-sm border-0 bg-dark text-white">
-                            <div class="card-body p-4">
-                                <div class="row align-items-center text-center text-md-start">
-                                    <div class="col-md-4 mb-3 mb-md-0 border-end border-secondary">
-                                        <span class="text-uppercase text-muted small fw-bold">Valor Total</span>
-                                        <h2 class="text-success mb-0 fw-bold">R$ 9.199,00</h2>
-                                    </div>
-                                    <div class="col-md-4 mb-3 mb-md-0 border-end border-secondary">
-                                        <span class="text-uppercase text-muted small fw-bold">Total de Itens</span>
-                                        <h3 class="mb-0 text-info fw-bold">3 itens</h3>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <span class="text-uppercase text-muted small fw-bold">Por Categoria</span>
-                                        <div class="small text-light mt-1">
-                                            <span class="badge bg-primary">1 TV</span>
-                                            <span class="badge bg-warning text-dark">1 Cel</span>
-                                            <span class="badge bg-info text-dark">1 Bike</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+              <hr />
 
-                    <div class="col-12">
-                        <div class="card shadow-sm border-0">
-                            <div class="card-header bg-light py-3">
-                                <h5 class="card-title mb-0 text-secondary">
-                                    <i class="bi bi-list-check me-2"></i>Itens no Carrinho
-                                </h5>
-                            </div>
-                            <div class="card-body p-0">
-                                <div class="table-responsive">
-                                    <table class="table table-hover align-middle mb-0">
-                                        <thead class="table-light">
-                                            <tr>
-                                                <th scope="col" class="ps-4">Tipo / Detalhes</th>
-                                                <th scope="col">Modelo</th>
-                                                <th scope="col">Fabricante</th>
-                                                <th scope="col" class="text-end">Valor</th>
-                                                <th scope="col" class="text-center" style="width: 100px;">Ações</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            
-                                            <tr>
-                                                <td class="ps-4">
-                                                    <span class="badge bg-primary mb-1"><i class="bi bi-tv me-1"></i> TV</span>
-                                                    <div class="text-muted small">55" • 4K Ultra HD</div>
-                                                </td>
-                                                <td class="fw-semibold">Crystal UHD</td>
-                                                <td>Samsung</td>
-                                                <td class="text-end fw-bold text-dark">R$ 3.200,00</td>
-                                                <td class="text-center">
-                                                    <button class="btn btn-outline-danger btn-sm" title="Remover produto">
-                                                        <i class="bi bi-trash"></i>
-                                                    </button>
-                                                </td>
-                                            </tr>
+              <div class="mb-3">
+                <label class="form-label">Modelo</label>
+                <input
+                  id="modelo"
+                  type="text"
+                  class="form-control"
+                  placeholder="Ex: Galaxy S24, Aro 29"
+                  required
+                />
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Fabricante</label>
+                <input
+                  id="fabricante"
+                  type="text"
+                  class="form-control"
+                  placeholder="Ex: Samsung, Caloi"
+                  required
+                />
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Valor (R$)</label>
+                <input
+                  id="preco"
+                  type="number"
+                  class="form-control"
+                  placeholder="0.00"
+                  step="0.01"
+                  required
+                />
+              </div>
 
-                                            <tr>
-                                                <td class="ps-4">
-                                                    <span class="badge bg-warning text-dark mb-1"><i class="bi bi-phone me-1"></i> Celular</span>
-                                                    <div class="text-muted small">12GB RAM • 512GB</div>
-                                                </td>
-                                                <td class="fw-semibold">Galaxy S24 Ultra</td>
-                                                <td>Samsung</td>
-                                                <td class="text-end fw-bold text-dark">R$ 4.499,00</td>
-                                                <td class="text-center">
-                                                    <button class="btn btn-outline-danger btn-sm" title="Remover produto">
-                                                        <i class="bi bi-trash"></i>
-                                                    </button>
-                                                </td>
-                                            </tr>
-
-                                            <tr>
-                                                <td class="ps-4">
-                                                    <span class="badge bg-info text-dark mb-1"><i class="bi bi-bicycle me-1"></i> Bicicleta</span>
-                                                    <div class="text-muted small">Aro 29</div>
-                                                </td>
-                                                <td class="fw-semibold">Explorer Expert</td>
-                                                <td>Caloi</td>
-                                                <td class="text-end fw-bold text-dark">R$ 1.500,00</td>
-                                                <td class="text-center">
-                                                    <button class="btn btn-outline-danger btn-sm" title="Remover produto">
-                                                        <i class="bi bi-trash"></i>
-                                                    </button>
-                                                </td>
-                                            </tr>
-
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
+              <div id="fields-tv" class="d-none">
+                <div class="mb-3">
+                  <label class="form-label">Resolução</label>
+                  <input
+                    id="resolucao"
+                    type="text"
+                    class="form-control"
+                    placeholder="Ex: 4K Ultra HD"
+                  />
                 </div>
-            </div>
+                <div class="mb-3">
+                  <label class="form-label">Tamanho (Polegadas)</label>
+                  <input
+                    id="polegadas"
+                    type="number"
+                    class="form-control"
+                    placeholder="Ex: 55"
+                  />
+                </div>
+              </div>
 
+              <div id="fields-celular">
+                <div class="mb-3">
+                  <label class="form-label">Memória (RAM/Armazenamento)</label>
+                  <input
+                    id="memoria"
+                    type="text"
+                    class="form-control"
+                    placeholder="Ex: 8GB / 256GB"
+                  />
+                </div>
+              </div>
+
+              <div id="fields-bicicleta" class="d-none">
+                <div class="mb-3">
+                  <label class="form-label">Tamanho do Aro</label>
+                  <input
+                    id="tamanhoAro"
+                    type="number"
+                    class="form-control"
+                    placeholder="Ex: 29"
+                  />
+                </div>
+              </div>
+
+              <button
+                type="button"
+                id="btnAdicionar"
+                class="btn btn-success w-100 mt-3"
+              >
+                <i class="bi bi-cart-plus-fill me-2"></i>Adicionar ao Carrinho
+              </button>
+            </div>
+          </div>
         </div>
+
+        <div class="col-lg-8">
+          <div class="row g-4">
+            <div class="col-12 sticky-display" style="z-index: 1020">
+              <div class="card shadow-sm border-0 bg-dark text-white">
+                <div class="card-body p-4">
+                  <div class="row align-items-center text-center text-md-start">
+                    <div
+                      class="col-md-4 mb-3 mb-md-0 border-end border-secondary"
+                    >
+                      <span class="text-uppercase text-muted small fw-bold"
+                        >Valor Total</span
+                      >
+                      <h2
+                        id="displayValorTotal"
+                        class="text-success mb-0 fw-bold"
+                      >
+                        R$ 0
+                      </h2>
+                    </div>
+                    <div
+                      class="col-md-4 mb-3 mb-md-0 border-end border-secondary"
+                    >
+                      <span class="text-uppercase text-muted small fw-bold"
+                        >Total de Itens</span
+                      >
+                      <h3 id="displayTotalItens" class="mb-0 text-info fw-bold">
+                        0 itens
+                      </h3>
+                    </div>
+                    <div class="col-md-4">
+                      <span class="text-uppercase text-muted small fw-bold"
+                        >Por Categoria</span
+                      >
+                      <div id="displayCategorias" class="small text-light mt-1">
+                        <span class="badge bg-primary">0 TV</span>
+                        <span class="badge bg-warning text-dark">0 Cel</span>
+                        <span class="badge bg-info text-dark">0 Bike</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-12">
+              <div class="card shadow-sm border-0">
+                <div class="card-header bg-light py-3">
+                  <h5 class="card-title mb-0 text-secondary">
+                    <i class="bi bi-list-check me-2"></i>Itens no Carrinho
+                  </h5>
+                </div>
+                <div class="card-body p-0">
+                  <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0">
+                      <thead class="table-light">
+                        <tr>
+                          <th scope="col" class="ps-4">Tipo / Detalhes</th>
+                          <th scope="col">Modelo</th>
+                          <th scope="col">Fabricante</th>
+                          <th scope="col" class="text-end">Valor</th>
+                          <th
+                            scope="col"
+                            class="text-center"
+                            style="width: 100px"
+                          >
+                            Ações
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody id="tabelaCorpo">
+                        <tr>
+                          <td colspan="5" class="text-center text-muted py-4">
+                            <i class="bi bi-cart-x h3 d-block mb-2"></i>
+                            Nenhum produto no carrinho.
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>
-        function toggleFields() {
-            const type = document.getElementById('productType').value;
-            
-            document.getElementById('fields-tv').classList.add('d-none');
-            document.getElementById('fields-celular').classList.add('d-none');
-            document.getElementById('fields-bicicleta').classList.add('d-none');
-            
-            if (type === 'tv') document.getElementById('fields-tv').classList.remove('d-none');
-            if (type === 'celular') document.getElementById('fields-celular').classList.remove('d-none');
-            if (type === 'bicicleta') document.getElementById('fields-bicicleta').classList.remove('d-none');
-        }
+      function toggleFields() {
+        const type = document.getElementById("productType").value;
+
+        document.getElementById("fields-tv").classList.add("d-none");
+        document.getElementById("fields-celular").classList.add("d-none");
+        document.getElementById("fields-bicicleta").classList.add("d-none");
+
+        if (type === "tv")
+          document.getElementById("fields-tv").classList.remove("d-none");
+        if (type === "celular")
+          document.getElementById("fields-celular").classList.remove("d-none");
+        if (type === "bicicleta")
+          document
+            .getElementById("fields-bicicleta")
+            .classList.remove("d-none");
+      }
     </script>
-</body>
+    <script src="./js/main.js" defer type="module"></script>
+  </body>
 </html>
