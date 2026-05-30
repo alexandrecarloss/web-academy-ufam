@@ -1,11 +1,184 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard EF</title>
-</head>
-<body>
-    
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Estatísticas da Turma - Ed. Física</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="bg-light">
+    <div class="container my-5">
+      <header
+        class="mb-4 pb-2 border-bottom d-flex justify-content-between align-items-center"
+      >
+        <div>
+          <h1 class="h2 text-primary">
+            <i class="bi bi-activity"></i> Portal da Turma
+          </h1>
+          <p class="text-muted">
+            Gestão de Alunos & Estatísticas em Tempo Real
+          </p>
+        </div>
+        <button id="btn-random-user" class="btn btn-outline-secondary">
+          <i class="bi bi-cloud-download"></i> Gerar Aluno Aleatório (Desafio)
+        </button>
+      </header>
+
+      <div class="row g-4">
+        <div class="col-lg-4">
+          <div class="card shadow-sm border-primary mb-4">
+            <div class="card-header bg-primary text-white font-weight-bold">
+              <i class="bi bi-bar-chart-line"></i> Dashboard da Turma
+            </div>
+            <div class="card-body">
+              <div class="row text-center">
+                <div class="col-6 mb-3">
+                  <small class="text-muted d-block text-uppercase"
+                    >Total Alunos</small
+                  >
+                  <span id="stat-total" class="fs-3 fw-bold text-dark">0</span>
+                </div>
+                <div class="col-6 mb-3">
+                  <small class="text-muted d-block text-uppercase"
+                    >Média Idade</small
+                  >
+                  <span id="stat-idade" class="fs-3 fw-bold text-dark">0</span>
+                  <small>anos</small>
+                </div>
+                <div class="col-6">
+                  <small class="text-muted d-block text-uppercase"
+                    >Média Altura</small
+                  >
+                  <span id="stat-altura" class="fs-3 fw-bold text-dark"
+                    >0.00</span
+                  >
+                  <small>m</small>
+                </div>
+                <div class="col-6">
+                  <small class="text-muted d-block text-uppercase"
+                    >Média Peso</small
+                  >
+                  <span id="stat-peso" class="fs-3 fw-bold text-dark">0.0</span>
+                  <small>kg</small>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card shadow-sm">
+            <div class="card-header bg-dark text-white" id="form-title">
+              <i class="bi bi-person-plus"></i> Adicionar Aluno
+            </div>
+            <div class="card-body">
+              <form id="aluno-form">
+                <input type="hidden" id="aluno-id" />
+
+                <div class="mb-3">
+                  <label for="nome" class="form-label">Nome Completo</label>
+                  <input
+                    type="text"
+                    class="form-serif form-control"
+                    id="nome"
+                    required
+                    placeholder="Ex: João Silva"
+                  />
+                </div>
+                <div class="mb-3">
+                  <label for="idade" class="form-label">Idade</label>
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="idade"
+                    required
+                    min="1"
+                    placeholder="Ex: 20"
+                  />
+                </div>
+                
+                <div class="row">
+                  <div class="col-6 mb-3">
+                    <label for="altura" class="form-label">Altura (m)</label>
+                    <input
+                      type="number"
+                      class="form-control"
+                      id="altura"
+                      required
+                      step="0.01"
+                      min="0.5"
+                      placeholder="Ex: 1.75"
+                    />
+                  </div>
+                  <div class="col-6 mb-3">
+                    <label for="peso" class="form-label">Peso (kg)</label>
+                    <input
+                      type="number"
+                      class="form-control"
+                      id="peso"
+                      required
+                      step="0.1"
+                      min="1"
+                      placeholder="Ex: 72.5"
+                    />
+                  </div>
+                </div>
+                <div class="d-grid gap-2">
+                  <button type="submit" id="btn-salvar" class="btn btn-success">
+                    Salvar Aluno
+                  </button>
+                  <button
+                    type="button"
+                    id="btn-cancelar"
+                    class="btn btn-light d-none"
+                  >
+                    Cancelar Edição
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-8">
+          <div class="card shadow-sm h-100">
+            <div class="card-header bg-white text-dark fw-bold">
+              <i class="bi bi-person-lines-fill"></i> Lista de Alunos
+              Matriculados
+            </div>
+            <div class="card-body p-0">
+              <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                  <thead class="table-light">
+                    <tr>
+                      <th>Nome</th>
+                      <th>Idade</th>
+                      <th>Altura</th>
+                      <th>Peso</th>
+                      <th>IMC</th>
+                      <th class="text-end px-4">Ações</th>
+                    </tr>
+                  </thead>
+                  <tbody id="tabela-alunos-corpo">
+                    <tr>
+                      <td colspan="6" class="text-center text-muted py-4">
+                        Nenhum aluno cadastrado na turma.
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="dist/app.js" type="module"></script>
+  </body>
 </html>

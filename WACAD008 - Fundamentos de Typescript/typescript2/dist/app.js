@@ -1,34 +1,35 @@
 import { Aluno, Turma } from "./types.js";
-
 const minhaTurma = new Turma("1", "Educação Física - Manhã");
-
-const form = document.getElementById('aluno-form') as HTMLFormElement | null;
-const inputId = document.getElementById('aluno-id') as HTMLInputElement | null;
-const inputNome = document.getElementById('nome') as HTMLInputElement | null;
-const inputIdade = document.getElementById('idade') as HTMLInputElement | null;
-const inputAltura = document.getElementById('altura') as HTMLInputElement | null;
-const inputPeso = document.getElementById('peso') as HTMLInputElement | null;
-const formTitle = document.getElementById('form-title') as HTMLElement | null;
-const btnSalvar = document.getElementById('btn-salvar') as HTMLButtonElement | null;
-const btnCancelar = document.getElementById('btn-cancelar') as HTMLButtonElement | null;
-const tabelaCorpo = document.getElementById('tabela-alunos-corpo') as HTMLElement | null;
-const statTotal = document.getElementById('stat-total') as HTMLElement | null;
-const statIdade = document.getElementById('stat-idade') as HTMLElement | null;
-const statAltura = document.getElementById('stat-altura') as HTMLElement | null;
-const statPeso = document.getElementById('stat-peso') as HTMLElement | null;
-
-
-function obterClasseCssImc(imc: number): string {
-    if (imc < 18.5) return 'table-warning';   
-    if (imc < 25)   return 'table-success';  
-    if (imc < 30)   return 'table-primary'; 
-    if (imc < 35)   return 'table-warning'; 
-    if (imc < 40)   return 'table-warning'; 
-    return 'table-danger';                 
+const form = document.getElementById('aluno-form');
+const inputId = document.getElementById('aluno-id');
+const inputNome = document.getElementById('nome');
+const inputIdade = document.getElementById('idade');
+const inputAltura = document.getElementById('altura');
+const inputPeso = document.getElementById('peso');
+const formTitle = document.getElementById('form-title');
+const btnSalvar = document.getElementById('btn-salvar');
+const btnCancelar = document.getElementById('btn-cancelar');
+const tabelaCorpo = document.getElementById('tabela-alunos-corpo');
+const statTotal = document.getElementById('stat-total');
+const statIdade = document.getElementById('stat-idade');
+const statAltura = document.getElementById('stat-altura');
+const statPeso = document.getElementById('stat-peso');
+function obterClasseCssImc(imc) {
+    if (imc < 18.5)
+        return 'table-warning';
+    if (imc < 25)
+        return 'table-success';
+    if (imc < 30)
+        return 'table-primary';
+    if (imc < 35)
+        return 'table-warning';
+    if (imc < 40)
+        return 'table-warning';
+    return 'table-danger';
 }
-
-function atualizarInterface(): void {
-    if (!statTotal || !statIdade || !statAltura || !statPeso || !tabelaCorpo) return;
+function atualizarInterface() {
+    if (!statTotal || !statIdade || !statAltura || !statPeso || !tabelaCorpo)
+        return;
     statTotal.innerText = minhaTurma.getNumAlunos().toString();
     statIdade.innerText = minhaTurma.getMediaIdades().toString();
     statAltura.innerText = minhaTurma.getMediaAlturas().toFixed(2);
@@ -38,7 +39,7 @@ function atualizarInterface(): void {
         tabelaCorpo.innerHTML = `<tr><td colspan="7" class="text-center text-muted py-4">Nenhum aluno cadastrado na turma.</td></tr>`;
         return;
     }
-    minhaTurma.alunos.forEach((aluno: Aluno) => {
+    minhaTurma.alunos.forEach((aluno) => {
         const tr = document.createElement('tr');
         const imc = aluno.getImc();
         tr.className = obterClasseCssImc(imc);
@@ -60,11 +61,11 @@ function atualizarInterface(): void {
         tabelaCorpo.appendChild(tr);
     });
 }
-
 if (form) {
-    form.addEventListener('submit', (e: Event) => {
+    form.addEventListener('submit', (e) => {
         e.preventDefault();
-        if (!inputId || !inputNome || !inputIdade || !inputAltura || !inputPeso) return;
+        if (!inputId || !inputNome || !inputIdade || !inputAltura || !inputPeso)
+            return;
         const id = inputId.value;
         const nome = inputNome.value;
         const idade = parseInt(inputIdade.value);
@@ -72,7 +73,8 @@ if (form) {
         const peso = parseFloat(inputPeso.value);
         if (id) {
             minhaTurma.editarAluno(id, { nomeCompleto: nome, idade, altura, peso });
-        } else {
+        }
+        else {
             const novoId = Date.now().toString();
             const novoAluno = new Aluno(novoId, nome, idade, altura, peso);
             minhaTurma.adicionarAluno(novoAluno);
@@ -81,9 +83,8 @@ if (form) {
         atualizarInterface();
     });
 }
-
-(window as any).prepararEdicao = function(id: string): void {
-    const aluno = minhaTurma.alunos.find((a: Aluno) => a.id === id);
+window.prepararEdicao = function (id) {
+    const aluno = minhaTurma.alunos.find((a) => a.id === id);
     if (aluno && inputId && inputNome && inputIdade && inputAltura && inputPeso && formTitle && btnSalvar && btnCancelar) {
         inputId.value = aluno.id;
         inputNome.value = aluno.nomeCompleto;
@@ -96,21 +97,20 @@ if (form) {
         btnCancelar.classList.remove('d-none');
     }
 };
-
-(window as any).deletarAluno = function(id: string): void {
+window.deletarAluno = function (id) {
     if (confirm("Tem certeza que deseja remover este aluno?")) {
         minhaTurma.removerAluno(id);
         atualizarInterface();
-        if (inputId && inputId.value === id) resetarFormulario();
+        if (inputId && inputId.value === id)
+            resetarFormulario();
     }
 };
-
 if (btnCancelar) {
     btnCancelar.addEventListener('click', resetarFormulario);
 }
-
-function resetarFormulario(): void {
-    if (!form || !inputId || !formTitle || !btnSalvar || !btnCancelar) return;
+function resetarFormulario() {
+    if (!form || !inputId || !formTitle || !btnSalvar || !btnCancelar)
+        return;
     form.reset();
     inputId.value = '';
     formTitle.innerHTML = `<i class="bi bi-person-plus"></i> Adicionar Aluno`;
@@ -118,31 +118,22 @@ function resetarFormulario(): void {
     btnSalvar.className = "btn btn-success";
     btnCancelar.classList.add('d-none');
 }
-
-async function gerarAlunosAleatorios(quantidade: number): Promise<Aluno[]> {
+async function gerarAlunosAleatorios(quantidade) {
     try {
         const resposta = await fetch(`https://randomuser.me/api/?results=${quantidade}&nat=br`);
         const dados = await resposta.json();
-        
-        return dados.results.map((user: any) => {
+        return dados.results.map((user) => {
             const alturaAleatoria = parseFloat((Math.random() * (1.95 - 1.50) + 1.50).toFixed(2));
             const pesoAleatorio = parseFloat((Math.random() * (95 - 50) + 50).toFixed(1));
-
-            return new Aluno(
-                user.login.uuid, 
-                `${user.name.first} ${user.name.last}`,
-                user.dob.age,
-                alturaAleatoria,
-                pesoAleatorio
-            );
+            return new Aluno(user.login.uuid, `${user.name.first} ${user.name.last}`, user.dob.age, alturaAleatoria, pesoAleatorio);
         });
-    } catch (erro) {
+    }
+    catch (erro) {
         console.error("Erro ao buscar alunos da API:", erro);
         return [];
     }
 }
-
-const btnRandomUser = document.getElementById('btn-random-user') as HTMLButtonElement | null;
+const btnRandomUser = document.getElementById('btn-random-user');
 if (btnRandomUser) {
     btnRandomUser.addEventListener('click', async () => {
         const novosAlunos = await gerarAlunosAleatorios(1);
@@ -150,8 +141,10 @@ if (btnRandomUser) {
         if (alunoGerado) {
             minhaTurma.adicionarAluno(alunoGerado);
             atualizarInterface();
-        } else {
+        }
+        else {
             alert("Erro ao buscar dados da API RandomUser");
         }
     });
 }
+//# sourceMappingURL=app.js.map

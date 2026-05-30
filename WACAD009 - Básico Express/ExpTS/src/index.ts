@@ -1,7 +1,12 @@
-import express, { type Request, type Response, type NextFunction } from 'express';
+import express, {
+  type Request,
+  type Response,
+  type NextFunction,
+} from 'express';
 import dotenv from 'dotenv';
 import morgan from 'morgan';
-import validateEnv, { user } from './utils/validateEnv.js';
+import validateEnv from './utils/validateEnv.js';
+import { user } from './utils/user.js';
 import { loggerMiddleware } from './middlewares/logger.js';
 
 dotenv.config();
@@ -14,6 +19,12 @@ app.use(express.json());
 app.use(morgan('short'));
 
 app.use(loggerMiddleware('simples'));
+
+const publicPath = `${process.cwd()}/public`;
+
+app.use('/css', express.static(`${publicPath}/css`));
+app.use('/js', express.static(`${publicPath}/js`));
+app.use('/img', express.static(`${publicPath}/img`));
 
 app.use((req: Request, res: Response, next: NextFunction) => {
   console.log(`Requisição ${req.method} ${req.url}`);
@@ -35,9 +46,9 @@ app.get('/contato', (req: Request, res: Response) => {
 
 app.use((req: Request, res: Response, next: NextFunction) => {
   if (user.checkAuth(req)) {
-    next(); 
+    next();
   } else {
-    res.status(403).json({ msg: 'Usuário não autenticado' }); 
+    res.status(403).json({ msg: 'Usuário não autenticado' });
   }
 });
 

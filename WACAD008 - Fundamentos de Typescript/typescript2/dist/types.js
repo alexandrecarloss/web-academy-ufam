@@ -1,72 +1,72 @@
 export class Aluno {
-    constructor(
-        public id: string,
-        public nomeCompleto: string,
-        public idade: number,
-        public altura: number,
-        public peso: number
-    ) {
+    id;
+    nomeCompleto;
+    idade;
+    altura;
+    peso;
+    constructor(id, nomeCompleto, idade, altura, peso) {
+        this.id = id;
+        this.nomeCompleto = nomeCompleto;
+        this.idade = idade;
+        this.altura = altura;
+        this.peso = peso;
         this.id = id;
         this.nomeCompleto = nomeCompleto;
         this.idade = idade;
         this.altura = altura;
         this.peso = peso;
     }
-
-    public getImc(): number {
+    getImc() {
         const alturaEmMetros = this.altura;
         return parseFloat((this.peso / (alturaEmMetros * alturaEmMetros)).toFixed(2));
     }
 }
-
 export class Turma {
-    public id: string;
-    public nome: string;
-    public alunos: Aluno[];
-
-    constructor(id: string, nome: string) {
+    id;
+    nome;
+    alunos;
+    constructor(id, nome) {
         this.id = id;
         this.nome = nome;
         this.alunos = [];
     }
-
-    getNumAlunos(): number {
+    getNumAlunos() {
         return this.alunos.length;
     }
-
-    getMediaIdades(): number {
-        if (this.alunos.length === 0) return 0;
+    getMediaIdades() {
+        if (this.alunos.length === 0)
+            return 0;
         const soma = this.alunos.reduce((acc, aluno) => acc + aluno.idade, 0);
         return parseFloat((soma / this.alunos.length).toFixed(1));
     }
-
-    getMediaAlturas(): number {
-        if (this.alunos.length === 0) return 0;
+    getMediaAlturas() {
+        if (this.alunos.length === 0)
+            return 0;
         const soma = this.alunos.reduce((acc, aluno) => acc + aluno.altura, 0);
         return parseFloat((soma / this.alunos.length).toFixed(2));
     }
-
-    getMediaPesos(): number {
-        if (this.alunos.length === 0) return 0;
+    getMediaPesos() {
+        if (this.alunos.length === 0)
+            return 0;
         const soma = this.alunos.reduce((acc, aluno) => acc + aluno.peso, 0);
         return parseFloat((soma / this.alunos.length).toFixed(1));
     }
-
-    adicionarAluno(aluno: Aluno): void {
+    adicionarAluno(aluno) {
         this.alunos.push(aluno);
     }
-
-    editarAluno(id: string, dadosAtualizados: Partial<Omit<Aluno, 'id'>>): boolean {
+    editarAluno(id, dadosAtualizados) {
         const aluno = this.alunos.find(a => a.id === id);
-        if (!aluno) return false;
+        if (!aluno)
+            return false;
         Object.assign(aluno, dadosAtualizados);
         return true;
     }
-
-    removerAluno(id: string): boolean {
+    removerAluno(id) {
         const index = this.alunos.findIndex(a => a.id === id);
-        if (index === -1) return false;
+        if (index === -1)
+            return false;
         this.alunos.splice(index, 1);
         return true;
     }
 }
+//# sourceMappingURL=types.js.map
