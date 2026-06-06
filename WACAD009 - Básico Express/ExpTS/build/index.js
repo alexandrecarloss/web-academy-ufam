@@ -1,12 +1,12 @@
-import express, {} from "express";
-import dotenv from "dotenv";
-dotenv.config();
+import express from 'express';
+import dotenv from 'dotenv';
+dotenv.config({ quiet: true });
+const PORT = process.env.PORT ?? 5566;
 const app = express();
-const PORT = process.env.PORT || 3000;
 app.get("/", (req, res) => {
-    res.send("Hello world!");
+    res.send("Hello, world!");
 });
 app.listen(PORT, () => {
-    console.log(`Servidor rodando em: http://localhost:${PORT}`);
+    console.log(`Server running on port ${PORT}`);
 });
 //# sourceMappingURL=index.js.map

@@ -5,7 +5,6 @@ const carrinho = new Carrinho();
 const productTypeSelect = document.getElementById('productType') as HTMLSelectElement;
 const btnAdicionar = document.getElementById('btnAdicionar') as HTMLButtonElement;
 const tabelaCorpo = document.getElementById('tabelaCorpo') as HTMLTableSectionElement;
-
 const displayValorTotal = document.getElementById('displayValorTotal') as HTMLElement;
 const displayTotalItens = document.getElementById('displayTotalItens') as HTMLElement;
 const displayCategorias = document.getElementById('displayCategorias') as HTMLElement;
