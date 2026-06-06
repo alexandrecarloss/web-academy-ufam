@@ -5,57 +5,34 @@ import express, {
 } from 'express';
 import morgan from 'morgan';
 import getEnv from './utils/getEnv.js';
-import { user } from './utils/user.js';
 import { loggerMiddleware } from './middlewares/logger.js';
 import router from './router/router.js';
+import { engine } from 'express-handlebars';
+import path from 'path';
 
 const env = getEnv();
 const PORT = env.PORT ?? 5566;
 const app = express();
 
+app.engine('handlebars', engine());
+app.set('view engine', 'handlebars');
+app.set('views', path.resolve('src/views'));
+
 app.use(express.json());
 app.use(morgan('short'));
-app.use(router);
 app.use(loggerMiddleware('simples'));
 
-const publicPath = `${process.cwd()}/public`;
-app.use('/css', express.static(`${publicPath}/css`));
-app.use('/js', express.static(`${publicPath}/js`));
-app.use('/img', express.static(`${publicPath}/img`));
+const publicPath = path.resolve('public');
+app.use('/css', express.static(path.join(publicPath, 'css')));
+app.use('/js', express.static(path.join(publicPath, 'js')));
+app.use('/img', express.static(path.join(publicPath, 'img')));
 
 app.use((req: Request, res: Response, next: NextFunction) => {
   console.log(`Requisição ${req.method} ${req.url}`);
   next();
 });
 
-app.get('/', (req: Request, res: Response) => {
-  res.send('Hello world!');
-});
-
-app.get('/bemvindo/:nome', (req, res) => {
-  res.send(`Seja bem vindo ${req.params.nome}`);
-});
-
-app.post('/', (req: Request, res: Response) => {
-  console.log('Requisição POST no /');
-  res.status(201).send('Recebido');
-});
-
-app.get('/contato', (req: Request, res: Response) => {
-  res.send('Página de contato');
-});
-
-app.use((req: Request, res: Response, next: NextFunction) => {
-  if (user.checkAuth(req)) {
-    next();
-  } else {
-    res.status(403).json({ msg: 'Usuário não autenticado' });
-  }
-});
-
-app.get('/segredo', (req: Request, res: Response) => {
-  res.json({ dados_secretos: { codigo: 156234 } });
-});
+app.use(router);
 
 app.listen(PORT, () => {
   console.log(`Servidor rodando em: http://localhost:${PORT}`);

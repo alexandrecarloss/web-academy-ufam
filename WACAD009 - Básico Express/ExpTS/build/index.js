@@ -3,11 +3,13 @@ import morgan from 'morgan';
 import getEnv from './utils/getEnv.js';
 import { user } from './utils/user.js';
 import { loggerMiddleware } from './middlewares/logger.js';
+import router from './router/router.js';
 const env = getEnv();
 const PORT = env.PORT ?? 5566;
 const app = express();
 app.use(express.json());
 app.use(morgan('short'));
+app.use(router);
 app.use(loggerMiddleware('simples'));
 const publicPath = `${process.cwd()}/public`;
 app.use('/css', express.static(`${publicPath}/css`));
@@ -17,8 +19,8 @@ app.use((req, res, next) => {
     console.log(`Requisição ${req.method} ${req.url}`);
     next();
 });
-app.get('/', (req, res) => {
-    res.send('Hello world!');
+app.get('/bemvindo/:nome', (req, res) => {
+    res.send(`Seja bem vindo ${req.params.nome}`);
 });
 app.post('/', (req, res) => {
     console.log('Requisição POST no /');
