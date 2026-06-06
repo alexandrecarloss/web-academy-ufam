@@ -1,12 +1,11 @@
-import express from 'express';
-import dotenv from 'dotenv';
+import express, { type Request, type Response } from 'express';
+import getEnv from "./utils/getEnv.js"
 
-dotenv.config({ quiet: true });
-
-const PORT = process.env.PORT ?? 5566;
+const env = getEnv()
+const PORT = env.PORT ?? 5566
 const app = express()
 
-app.get("/", (req, res) => {
+app.get("/", (req: Request, res: Response) => {
     res.send("Hello, world!")
 })
 
