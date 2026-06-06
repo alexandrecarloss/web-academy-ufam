@@ -14,7 +14,9 @@ const env = getEnv();
 const PORT = env.PORT ?? 5566;
 const app = express();
 
-app.engine('handlebars', engine());
+import * as helpers from './views/helpers/helpers.js';
+
+app.engine('handlebars', engine({ helpers }));
 app.set('view engine', 'handlebars');
 app.set('views', path.resolve('src/views'));
 
