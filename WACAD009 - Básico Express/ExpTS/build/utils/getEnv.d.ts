@@ -1,7 +1,7 @@
 declare function getEnv(): Readonly<{
     PORT: number;
-    NODE_ENV: string;
     LOG_DIR: string;
+    PATH_API: string;
 } & import("envalid").CleanedEnvAccessors>;
 export default getEnv;
 //# sourceMappingURL=getEnv.d.ts.map

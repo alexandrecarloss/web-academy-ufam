@@ -10,7 +10,8 @@
     "format": "prettier --write src/",
     "build": "tsc",
     "start:prod": "cross-env NODE_ENV=production node build/index.js",
-    "saas": "sass --watch public/scss/main.scss public/css/main.css"
+    "sass": "sass --watch public/scss/main.scss public/css/main.css",
+    "start:db": "npx json-server --watch data/db.json --port 3355"
   },
   "keywords": [],
   "author": "",
@@ -23,9 +24,9 @@
     "envalid": "^8.1.1",
     "express": "^5.2.1",
     "express-handlebars": "^9.0.1",
+    "json-server": "^1.0.0-beta.15",
     "lorem-ipsum": "^3.0.0",
-    "morgan": "^1.11.0",
-    "saas": "^1.0.0"
+    "morgan": "^1.11.0"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
@@ -36,6 +37,7 @@
     "globals": "^17.6.0",
     "nodemon": "^3.1.14",
     "prettier": "^3.8.3",
+    "sass": "^1.100.0",
     "tsx": "^4.22.4",
     "typescript": "^6.0.3",
     "typescript-eslint": "^8.60.1"

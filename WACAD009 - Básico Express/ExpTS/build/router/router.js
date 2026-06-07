@@ -1,37 +1,24 @@
 import { Router } from 'express';
-import { LoremIpsum } from "lorem-ipsum";
+import mainController from '../controllers/main.js';
+import productControler from '../controllers/product.js';
 const router = Router();
-const lorem = new LoremIpsum({
-    sentencesPerParagraph: {
-        min: 4,
-        max: 8
-    },
-    wordsPerSentence: {
-        min: 4,
-        max: 16
-    }
-});
-router.get('/', (req, res) => {
-    res.send('Página principal do site');
-});
-router.get('/lorem/:qtd', (req, res) => {
-    const qtd = parseInt(req.params.qtd);
-    if (isNaN(qtd) || qtd <= 0) {
-        return res.status(400).json({ error: 'Quantidade inválida' });
-    }
-    const texto = lorem.generateParagraphs(qtd);
-    const paragraphs = texto.split("\n");
-    let result = '';
-    console.log(paragraphs);
-    paragraphs.forEach(paragraph => {
-        result += `
-          <p>${paragraph}</p>
-      `;
-    });
-    res.send("result");
-});
-router.get('/sobre', (req, res) => {
-    res.send('Página sobre');
-});
+router.get('/', mainController.index);
+router.get('/lorem/:qtd', mainController.loremIpsum);
+router.get('/sobre', mainController.sobre);
+router.get('/bemvindo/:nome', mainController.bemvindo);
+router.get('/contato', mainController.contato);
+router.get('/hb1', mainController.hb1);
+router.get('/hb2', mainController.hb2);
+router.get('/hb3', mainController.hb3);
+router.get('/hb4', mainController.hb4);
+// Products Controller
+router.get("/products/", productControler.index);
+router.all("/products/create", productControler.create);
+router.get("/products/read/:id", productControler.read);
+router.all("/products/update/:id", productControler.update);
+router.delete("/products/delete/:id", productControler.remove);
+// --- BARREIRA DE AUTENTICAÇÃO ---
+router.use(mainController.authMiddleware);
+router.get('/segredo', mainController.segredo);
 export default router;
 //# sourceMappingURL=router.js.map

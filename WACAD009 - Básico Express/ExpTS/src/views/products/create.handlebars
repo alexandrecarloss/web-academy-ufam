@@ -1,0 +1,40 @@
+<div class='d-flex align-items-center justify-content-between'>
+  <h4>Criação de Produto</h4>
+  <h4><a href='/products'><i class='bi bi-arrow-left-square'></i></a></h4>
+</div>
+<div class="row justify-content-center">
+    <div class="col-4">
+        <form action='/products/create' method='post'>
+          <div class='mb-3'>
+            <label for='name' class='form-label'>Nome do produto</label>
+            <input
+              type='text'
+              class='form-control'
+              id='name'
+              name="name"
+            />
+          </div>
+
+          <div class='mb-3'>
+            <label for='price' class='form-label'>Preço do Produto</label>
+            <input
+              type='number'
+              class='form-control'
+              id='price'
+              name="price"
+            />
+          </div>
+
+          <div class='mb-3'>
+            <label for='stock' class='form-label'>Estoque</label>
+            <input
+              type='number'
+              class='form-control'
+              id='stock'
+              name="stock"
+            />
+          </div>
+          <button type="submit" class="btn btn-primary">Criar</button>
+        </form>
+    </div>
+</div>

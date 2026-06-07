@@ -40,6 +40,8 @@ app.use('/js', [
 ]);
 app.use('/img', express.static(path.join(publicPath, 'img')));
 
+app.use(express.urlencoded({ extended: false }))
+
 app.use((req: Request, res: Response, next: NextFunction) => {
   console.log(`Requisição ${req.method} ${req.url}`);
   next();

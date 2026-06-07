@@ -6,8 +6,8 @@ dotenv.config({ quiet: true });
 function getEnv() {
     return cleanEnv(process.env, {
         PORT: port({ default: 5566 }),
-        NODE_ENV: str(),
-        LOG_DIR: str(),
+        LOG_DIR: str({ default: "logs"}),
+        PATH_API: str({ default: "http://localhost:3355/products" }),
     });
 } 
 
