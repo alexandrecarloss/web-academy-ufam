@@ -30,8 +30,14 @@ app.use(morgan('short'));
 app.use(loggerMiddleware('simples'));
 
 const publicPath = path.resolve('public');
-app.use('/css', express.static(path.join(publicPath, 'css')));
-app.use('/js', express.static(path.join(publicPath, 'js')));
+app.use('/css', [
+  express.static(path.join(publicPath, 'css')),
+  express.static(`${process.cwd()}/node_modules/bootstrap/dist/css`),
+]);
+app.use('/js', [
+  express.static(path.join(publicPath, 'js')),
+  express.static(`${process.cwd()}/node_modules/bootstrap/dist/js`),
+]);
 app.use('/img', express.static(path.join(publicPath, 'img')));
 
 app.use((req: Request, res: Response, next: NextFunction) => {

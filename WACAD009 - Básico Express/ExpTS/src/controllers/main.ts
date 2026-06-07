@@ -51,14 +51,14 @@ const contato = (req: Request, res: Response) => {
 };
 
 const hb1 = (req: Request, res: Response) => {
-  res.render('hb/hb1', {
+  res.render('main/hb1', {
     mensagem: 'Olá, você está aprendendo Express + HBS!',
   });
 };
 
 const hb2 = (req: Request, res: Response) => {
   const message = "Bem-vindo(a) ao Web Academy!!"
-  res.render('hb/hb2', {
+  res.render('main/hb2', {
     showMessage: true,
     message: message
   });
@@ -71,7 +71,7 @@ const hb3 = (req: Request, res: Response) => {
     { nome: 'Edleno Moura', sala: 1236 },
     { nome: 'Elaine Harada', sala: 1231 },
   ];
-  res.render('hb/hb3', { profes });
+  res.render('main/hb3', { profes });
 };
 
 const hb4 = function (req: Request, res: Response) {
@@ -84,7 +84,7 @@ const hb4 = function (req: Request, res: Response) {
     { name: 'Docker', type: 'Virtualization', poweredByNodejs: false },
     { name: 'Sequelize', type: 'ORM tool', poweredByNodejs: true },
   ];
-  res.render('hb/hb4', { technologies });
+  res.render('main/hb4', { technologies });
 };
 
 const authMiddleware = (req: Request, res: Response, next: NextFunction) => {
