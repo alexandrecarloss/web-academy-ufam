@@ -1,3 +1,11 @@
+:root {
+    --primary: red;
+    --secondary: #45a334;
+    --space: 4px;
+}
+
 h1 {
-    color: #0b6523;
+    color: var(--primary);
+    background-color: var(--secondary);
+    margin-top: calc(var(--space) * 2);
 }

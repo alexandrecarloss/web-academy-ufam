@@ -1,5 +1,6 @@
-import type { Request, Response } from 'express';
+import type { Request, Response, NextFunction } from 'express';
 import { LoremIpsum } from 'lorem-ipsum';
+import { user } from '../utils/user.js';
 
 const index = (req: Request, res: Response) => {
   res.send('Página principal do site');
@@ -86,5 +87,17 @@ const hb4 = function (req: Request, res: Response) {
   res.render('hb/hb4', { technologies });
 };
 
-export default { index, loremIpsum, sobre, bemvindo, contato, hb1, hb2, hb3, hb4 };
+const authMiddleware = (req: Request, res: Response, next: NextFunction) => {
+  if (user.checkAuth(req)) {
+    next();
+  } else {
+    res.status(403).json({ msg: 'Usuário não autenticado' });
+  }
+}
+
+const segredo = (req: Request, res: Response) => {
+  res.json({ dados_secretos: { codigo: 156234 } });
+}
+
+export default { index, loremIpsum, sobre, bemvindo, contato, hb1, hb2, hb3, hb4, authMiddleware, segredo };
 

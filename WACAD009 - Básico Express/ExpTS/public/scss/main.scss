@@ -1,0 +1,21 @@
+$primary: green;
+$space: 4px;
+
+h1 {
+  color: $primary;
+  margin-top: $space * 2;
+}
+
+@mixin borda($wth) {
+  border-top: dotted $wth black;
+  border-bottom: solid $wth black;
+}
+
+#menu a {
+  color: #111;
+  @include borda(2px);
+}
+
+.post a {
+  @include borda(1px);
+}
