@@ -20,6 +20,11 @@ app.engine('handlebars', engine({ helpers }));
 app.set('view engine', 'handlebars');
 app.set('views', path.resolve('src/views'));
 
+app.use((req, res, next) => {
+  res.locals.info = "Alguma informação importante para todas as views";
+  next();
+})
+
 app.use(express.json());
 app.use(morgan('short'));
 app.use(loggerMiddleware('simples'));
