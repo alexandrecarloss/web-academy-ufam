@@ -1,5 +1,5 @@
 import type { Request, Response } from "express";
-import { createProduct, getProducts } from "../services/products.js";
+import { createProduct, getProduct, getProducts, updateProduct, deleteProduct } from "../services/products.js";
 import type { Product } from "../types/product.js";
 
 const index= async (req: Request, res: Response) => {
@@ -18,14 +18,34 @@ const create = async (req: Request, res: Response) => {
     }
 }
 const read = async (req: Request, res: Response) => {
-    const { id } = req.params; 
-    res.end(id);
+    const id = req.params.id as string;
+    const product = await getProduct(id)
+    console.log("ID: ", id)
+    res.render("products/read", {
+        product
+    })
 }
 const update = async (req: Request, res: Response) => {
-
+    const id = req.params.id as string;
+    if(req.method === "GET") {
+        const product = await getProduct(id)
+        res.render("products/update", {
+        product
+    })
+    } else if (req.method == "POST") {
+        const product = req.body as Product
+        await updateProduct(id, product)
+        res.redirect("/products")
+    }
 }
 const remove = async (req: Request, res: Response) => {
-
+    try {
+        const id = req.params.id as string
+        await deleteProduct(id)
+        res.status(200).json({ success: true });
+    } catch (error) {
+        res.status(500).json({ error: "Erro ao deletar o produto" });
+    }
 }
 
 export default { index, create, read, update, remove }

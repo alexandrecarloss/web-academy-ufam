@@ -15,3 +15,23 @@ export const createProduct = async(product: Product) => {
     })
     return response.json()
 }
+
+export const getProduct = async (id: string) => {
+    const response = await fetch(`${env.PATH_API}/${id}`)
+    return response.json()
+}
+
+export const updateProduct = async (id: string, product: Product) => {
+    const response = await fetch(`${env.PATH_API}/${id}`, {
+        method: "PUT",
+        body: JSON.stringify(product),
+    })
+    return response.json()
+}
+
+export const deleteProduct = async (id: string) => {
+    const response = await fetch(`${env.PATH_API}/${id}`, {
+        method: "DELETE"
+    });
+    return response.json();
+};

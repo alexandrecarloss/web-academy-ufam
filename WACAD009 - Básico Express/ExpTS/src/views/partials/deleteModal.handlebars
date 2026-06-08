@@ -1,0 +1,40 @@
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="deleteModalLabel">Confirmar Exclusão</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        Tem certeza que deseja apagar o produto <strong id="deleteModalProductName"></strong>? Esta ação não poderá ser desfeita.
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-danger" id="btnConfirmDelete">Apagar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  let productIdToDelete = null;
+
+  function prepareDelete(id, name) {
+    productIdToDelete = id;
+    document.getElementById('deleteModalProductName').textContent = name;
+  }
+
+  document.getElementById('btnConfirmDelete').addEventListener('click', async () => {
+    if (!productIdToDelete) return;
+
+    const response = await fetch(`/products/delete/${productIdToDelete}`, {
+      method: 'DELETE'
+    });
+
+    if (response.ok) {
+      window.location.href = '/products';
+    } else {
+      alert('Erro ao tentar apagar o produto.');
+    }
+  });
+</script>

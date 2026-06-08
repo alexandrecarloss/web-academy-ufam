@@ -1,10 +1,10 @@
 {
   "products": [
     {
-      "id": "1",
-      "name": "Celular",
-      "price": 100,
-      "stock": 10
+      "name": "Celular 1",
+      "price": "1001",
+      "stock": "101",
+      "id": "1"
     },
     {
       "id": "2",
@@ -17,12 +17,6 @@
       "name": "Monitor",
       "price": 150,
       "stock": 12
-    },
-    {
-      "name": "Celular",
-      "price": "3000",
-      "stock": "34",
-      "id": "BzqkK85zpsw"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"
