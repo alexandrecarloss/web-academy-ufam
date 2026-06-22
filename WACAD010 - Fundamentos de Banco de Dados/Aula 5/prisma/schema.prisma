@@ -1,0 +1,98 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "mysql"
+}
+
+model Cliente {
+  cpf   String     @id @db.VarChar(11)
+  nome  String @db.VarChar(150)
+  celular String @db.VarChar(20)
+  email String  @unique @db.VarChar(254)
+  data_nasc DateTime @db.Date
+  enderecos Endereco[]
+  compras Compra[]
+}
+
+model Endereco {
+  id      Int     @id @default(autoincrement())
+  logradouro  String @db.VarChar(150)
+  numero  String @db.VarChar(10)
+  estado  String @db.Char(2)
+  cep     String @db.VarChar(10)
+  bairro  String @db.VarChar(150)
+  cidade  String @db.VarChar(150)
+  cliente Cliente @relation(fields: [cliente_cpf], references: [cpf])
+  cliente_cpf String @db.VarChar(11)
+  compras Compra[]
+}
+
+enum FormaPagamento {
+    BOLETO
+    CARTAO_CREDITO
+    PIX
+}
+
+model Compra {
+  codigo Int     @id @default(autoincrement())
+  forma_pagamento FormaPagamento
+  data_hora DateTime
+  desconto Float @default(0)
+  total Float
+  cliente Cliente @relation(fields: [cliente_cpf], references: [cpf])
+  cliente_cpf String @db.VarChar(11)
+  endereco Endereco @relation(fields: [endereco_codigo], references: [id])
+  endereco_codigo Int
+  compras_produtos CompraProduto[]
+}
+
+model Categoria {
+  codigo Int @id @default(autoincrement())
+  nome String @db.VarChar(100)
+  subcategorias Subcategoria[]
+}
+
+model Subcategoria {
+  codigo Int @id @default(autoincrement())
+  nome String @db.VarChar(100)
+  categoria Categoria @relation(fields: [codigo_categoria], references: [codigo])
+  codigo_categoria Int
+  produtos Produto[]
+}
+
+model Produto {
+  codigo Int @id @default(autoincrement())
+  nome String @db.VarChar(150)
+  quantidade Int
+  preco Float
+  fabricante String @db.VarChar(150)
+  modelo String @db.VarChar(150)
+  subcategoria Subcategoria @relation(fields: [subcategoria_codigo], references: [codigo])
+  subcategoria_codigo Int
+  series ProdutoSerie[]
+  compras CompraProduto[]
+}
+
+model ProdutoSerie {
+  numero_serie String @id @db.VarChar(100)
+  produto Produto @relation(fields: [produto_codigo], references: [codigo])
+  produto_codigo Int
+}
+
+model CompraProduto {
+  compra_codigo Int
+  produto_codigo Int
+  quantidade Int
+  compra Compra @relation(fields: [compra_codigo], references: [codigo])
+  produto Produto @relation(fields: [produto_codigo], references: [codigo])
+
+  @@id([compra_codigo, produto_codigo])
+}
