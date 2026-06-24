@@ -95,6 +95,3 @@ create table if not exists compra_produto (
     on update cascade
     on delete restrict
 );
-
-
-
