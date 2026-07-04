@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gerenciamento de Clientes - Web Academy</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+
+  <div class="container my-5">
+    <div class="text-center mb-4">
+      <h1 class="fw-bold text-primary">Painel de Clientes</h1>
+      <p class="text-muted">CRUD Completo com Express, Prisma e Bootstrap</p>
+    </div>
+
+    <% if (erro) { %>
+      <div class="alert alert-danger" role="alert"><%= erro %></div>
+    <% } %>
+
+    <div class="row g-4">
+      <div class="col-md-4">
+        <div class="card shadow-sm border-0 p-4">
+          <h4 class="mb-3 text-secondary">Novo Cliente</h4>
+          <form action="/clientes" method="POST">
+            <div class="mb-2">
+              <label class="form-label mb-1Small">CPF (Apenas números)</label>
+              <input type="text" name="cpf" class="form-control form-control-sm" required maxlength="11">
+            </div>
+            <div class="mb-2">
+              <label class="form-label mb-1Small">Nome Completo</label>
+              <input type="text" name="nome" class="form-control form-control-sm" required>
+            </div>
+            <div class="mb-2">
+              <label class="form-label mb-1Small">Celular</label>
+              <input type="text" name="celular" class="form-control form-control-sm" required>
+            </div>
+            <div class="mb-2">
+              <label class="form-label mb-1Small">E-mail</label>
+              <input type="email" name="email" class="form-control form-control-sm" required>
+            </div>
+            <div class="mb-3">
+              <label class="form-label mb-1Small">Data de Nascimento</label>
+              <input type="date" name="data_nasc" class="form-control form-control-sm" required>
+            </div>
+
+            <h5 class="mt-4 mb-2 text-muted border-bottom pb-1">Endereço de Entrega</h5>
+            <div class="row g-2">
+              <div class="col-8 mb-2">
+                <input type="text" name="logradouro" placeholder="Rua / Av" class="form-control form-control-sm" required>
+              </div>
+              <div class="col-4 mb-2">
+                <input type="text" name="numero" placeholder="Nº" class="form-control form-control-sm" required>
+              </div>
+            </div>
+            <div class="row g-2">
+              <div class="col-6 mb-2">
+                <input type="text" name="bairro" placeholder="Bairro" class="form-control form-control-sm" required>
+              </div>
+              <div class="col-6 mb-2">
+                <input type="text" name="cidade" placeholder="Cidade" class="form-control form-control-sm" required>
+              </div>
+            </div>
+            <div class="row g-2 mb-3">
+              <div class="col-4">
+                <input type="text" name="estado" placeholder="UF" class="form-control form-control-sm" maxlength="2" required>
+              </div>
+              <div class="col-8">
+                <input type="text" name="cep" placeholder="CEP" class="form-control form-control-sm" maxlength="8" required>
+              </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100 btn-sm">Salvar Cliente</button>
+          </form>
+        </div>
+      </div>
+
+      <div class="col-md-8">
+        <div class="card shadow-sm border-0 p-4">
+          <h4 class="mb-3 text-secondary">Clientes no Banco</h4>
+          <div class="table-responsive">
+            <table class="table table-hover align-middle">
+              <thead class="table-dark">
+                <tr>
+                  <th>Cliente</th>
+                  <th>Contato / Endereço</th>
+                  <th>Ações</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% if (clientes.length === 0) { %>
+                  <tr>
+                    <td colspan="3" class="text-center text-muted py-4">Nenhum cliente cadastrado.</td>
+                  </tr>
+                <% } %>
+                <% clientes.forEach(cliente => { %>
+                  <tr>
+                    <td>
+                      <strong class="d-block"><%= cliente.nome %></strong>
+                      <small class="text-muted">CPF: <%= cliente.cpf %></small>
+                    </td>
+                    <td>
+                      <span class="d-block">📧 <%= cliente.email %></span>
+                      <small class="text-muted">📍 
+                        <%= cliente.enderecos[0]?.logradouro %>, Nº <%= cliente.enderecos[0]?.numero %> - <%= cliente.enderecos[0]?.cidade %>/<%= cliente.enderecos[0]?.estado %>
+                      </small>
+                    </td>
+                    <td>
+                      <form action="/clientes/<%= cliente.cpf %>/editar" method="POST" class="d-inline-block me-1">
+                        <div class="input-group input-group-sm" style="max-width: 160px;">
+                          <input type="text" name="celular" value="<%= cliente.celular %>" class="form-control form-control-sm">
+                          <button class="btn btn-warning text-white btn-sm" type="submit">📝</button>
+                        </div>
+                      </form>
+                      <form action="/clientes/<%= cliente.cpf %>/deletar" method="POST" class="d-inline-block align-top">
+                        <button type="submit" class="btn btn-danger btn-sm">❌</button>
+                      </form>
+                    </td>
+                  </tr>
+                <% }) %>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>

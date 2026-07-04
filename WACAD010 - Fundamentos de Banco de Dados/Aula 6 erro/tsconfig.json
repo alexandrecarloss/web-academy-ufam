@@ -1,0 +1,29 @@
+{
+  "compilerOptions": {
+    "rootDir": "./src",
+    "outDir": "./build/js",
+    "module": "commonjs",
+    "moduleResolution": "node", 
+    "ignoreDeprecations": "6.0",
+    "target": "es2022",
+    "types": ["*"],
+    "paths": {
+      "@prisma/client": ["./generated/prisma"]
+    },
+    "composite": true,
+    "sourceMap": true,
+    "declaration": true,
+    "declarationMap": true,
+    "noUncheckedIndexedAccess": true,
+    "exactOptionalPropertyTypes": true,
+    "strict": true,
+    "jsx": "react-jsx",
+    "isolatedModules": true,
+    "noUncheckedSideEffectImports": true,
+    "moduleDetection": "auto",
+    "skipLibCheck": true
+  },
+  "include": [
+    "src/**/*"
+  ]
+}

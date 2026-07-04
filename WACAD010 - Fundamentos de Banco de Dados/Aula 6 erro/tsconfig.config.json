@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "target": "esnext",
+    "types": ["node"],
+    "skipLibCheck": true,
+    "noEmit": true,
+    "composite": true
+  },
+  "include": [
+    "prisma.config.ts",
+    "getting_started/script.ts"
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "compilerOptions": {
+    "outDir": "./build",
+    "module": "nodenext",
+    "esModuleInterop": true,
+    "target": "esnext",
+    "types": ["*"],
+    "paths": {
+      "@prisma/client": ["./generated/prisma"]
+    },
+    
+    "sourceMap": true,
+    "declaration": true,
+    "declarationMap": true,
+    "noUncheckedIndexedAccess": true,
+    "exactOptionalPropertyTypes": true,
+    "strict": true,
+    "jsx": "react-jsx",
+    "verbatimModuleSyntax": true,
+    "isolatedModules": true,
+    "noUncheckedSideEffectImports": true,
+    "moduleDetection": "force",
+    "skipLibCheck": true,
+  },
+"include": ["src/**/*",
+"prisma.config.ts",],
+"exclude": ["build", "node_modules"]
+}
