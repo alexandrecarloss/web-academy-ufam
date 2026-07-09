@@ -4,7 +4,9 @@ import { StatusCodes } from "http-status-codes";
 
 function validate(schema: Schema) {
     return (req: Request, res: Response, next: NextFunction) => {
-        const { error } = schema.validate(req.body)
+        const { error } = schema.validate(req.body, {
+            abortEarly: false,
+        })
         if (error) res.status(StatusCodes.BAD_REQUEST).json(error);
         else next();
     }

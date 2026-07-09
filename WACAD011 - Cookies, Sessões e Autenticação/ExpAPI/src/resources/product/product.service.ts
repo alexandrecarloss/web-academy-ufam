@@ -13,3 +13,11 @@ export async function createProduct(data: CreateProductDto): Promise<Product> {
 export async function getProductById(id: string): Promise<Product | null> {
     return prisma.product.findFirst({where: { id }});
 }
+
+export async function updateProduct(id: string, data: CreateProductDto): Promise<Product> {
+    return prisma.product.update({ where: { id }, data });
+}
+
+export async function deleteProduct(id: string): Promise<Product> {
+    return prisma.product.delete({where: { id }});
+}
