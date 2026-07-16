@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  backend-webacademy:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: backend-webacademy
+    ports:
+      - "4000:4000"
+    networks:
+      - pingadores-net
+
+  frontend-webacademy:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: frontend-webacademy
+    ports:
+      - "3000:3000"
+    networks:
+      - pingadores-net
+    depends_on:
+      - backend-webacademy
+
+networks:
+  pingadores-net:
+    driver: bridge
