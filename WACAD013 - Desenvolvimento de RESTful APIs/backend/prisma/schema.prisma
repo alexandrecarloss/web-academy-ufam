@@ -1,0 +1,38 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "mysql"
+}
+
+model Product {
+  id String @id @default(uuid()) @db.Char(36)
+  name String @unique @db.VarChar(100)
+  description String @db.Text
+  image String @db.VarChar(200)
+  price Decimal @db.Decimal(10, 2)
+  stock Int @db.Int
+  status Int @db.TinyInt
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  @@map("products")
+}
+
+model UserType {
+  id String @id @default(uuid()) @db.Char(35)
+  label String @db.VarChar(10)
+  users User[]
+}
+
+model User {
+  id String @id @default(uuid()) @db.Char(36)
+  name String @db.VarChar(100)
+  email String @unique @db.VarChar(100)
+  password String @db.Char(60)
+  userTypeId String @db.Char(36)
+  userType UserType @relation(references: [id], fields: [userTypeId])
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+}
