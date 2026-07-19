@@ -30,13 +30,16 @@ services:
   backend:
     build:
       context: ./backend
-      target: runner
+      target: dev
     restart: unless-stopped
     environment: 
       PORT: ${BACKEND_PORT}
       DATABASE_URL: mysql://root:${MYSQL_ROOT_PASSWORD}@db:3306/${MYSQL_DATABASE}
     ports:
       - "${BACKEND_PORT}:${BACKEND_PORT}"
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
     depends_on:
       db:
         condition: service_healthy
