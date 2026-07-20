@@ -1,6 +1,6 @@
 import { genSalt, hash } from "bcryptjs";
 import { prisma } from "../../utils/prismaClient.js";
-import type { CreateUserDto, UserDto } from "./user.types.js";
+import type { CreateUserDto, UpdateUserDto, UserDto } from "./user.types.js";
 import getEnv from "../../utils/validateEnv.js";
 
 const env = getEnv();
@@ -11,6 +11,13 @@ export async function getUsers(): Promise<UserDto[]> {
     const { password, ...user } = u;
     return user;
   });
+}
+
+export async function findUserByEmail(email: string): Promise<UserDto | null> {
+    const tempUser = await prisma.user.findFirst({ where: { email }});
+    if (!tempUser) return null;
+    const { password, ...user } = tempUser;
+    return user;
 }
 
 export async function getUser(id: string): Promise<UserDto | null> {
@@ -27,4 +34,16 @@ export async function createUser(data: CreateUserDto): Promise<UserDto> {
     data: { ...data, password: passwordHash },
   });
   return user;
+}
+
+export async function updateUser(id: string, data: UpdateUserDto): Promise<UserDto | null> {
+    const tempUser = await prisma.user.findFirst({ where: { id }});
+    if (!tempUser) return null;
+    const { password, ...user } = await prisma.user.update({ where: { id }, data })
+    return user;
+}
+
+export async function deleteUser(id: string): Promise<UserDto> {
+    const { password, ...user } = await prisma.user.delete({ where: { id }});
+    return user;
 }

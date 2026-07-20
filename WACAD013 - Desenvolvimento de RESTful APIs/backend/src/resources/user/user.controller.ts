@@ -1,7 +1,7 @@
 import type { Request, Response } from "express";
-import type { CreateUserDto } from "./user.types.js";
-import { createUser, getUser, getUsers } from "./user.service.js";
-import { StatusCodes } from "http-status-codes";
+import type { CreateUserDto, UpdateUserDto } from "./user.types.js";
+import { createUser, deleteUser, findUserByEmail, getUser, getUsers, updateUser } from "./user.service.js";
+import { ReasonPhrases, StatusCodes } from "http-status-codes";
 import { userErrors } from "./user.errors.js";
 
 const index = async (req: Request, res: Response) => {
@@ -16,6 +16,9 @@ const index = async (req: Request, res: Response) => {
 const create = async (req: Request, res: Response) => {
   const data = req.body as CreateUserDto;
   try {
+    if (await findUserByEmail(data.email)) {
+      return res.status(StatusCodes.CONFLICT).send(ReasonPhrases.CONFLICT)
+    }
     const user = await createUser(data);
     res.status(StatusCodes.CREATED).json(user);
   } catch (err) {
@@ -27,16 +30,39 @@ const read = async (req: Request, res: Response) => {
   const id = req.params.id as string;
   try {
     const user = await getUser(id);
+    if (!user) {
+      return res.status(StatusCodes.NOT_FOUND).json({ message: "Usuário não encontrado" });
+    }
     res.status(StatusCodes.OK).json(user);
   } catch (err) {
     userErrors(err, res);
   }
 };
 const update = async (req: Request, res: Response) => {
-  res.send("fala update user");
+  const id = req.params.id as string;
+    try {
+      const updatedUser = req.body as UpdateUserDto;
+      const result = await updateUser(id, updatedUser);
+      if (!result) {
+        return res.status(StatusCodes.NOT_FOUND).json({ message: "Usuário não encontrado" });
+      }
+      res.status(StatusCodes.OK).json(result);
+    } catch (err) {
+      userErrors(err, res);
+    }
 };
 const remove = async (req: Request, res: Response) => {
-  res.send("fala delete user");
+  const id = req.params.id as string;
+    try {
+      const result = await deleteUser(id);
+      if (!result) {
+        return res.status(StatusCodes.NOT_FOUND).json({ message: "Usuário não encontrado" });
+      }
+      res.status(StatusCodes.OK).json(result);
+    } catch (err) {
+      userErrors(err, res);
+    }
+
 };
 
 export default { index, create, read, update, remove };
