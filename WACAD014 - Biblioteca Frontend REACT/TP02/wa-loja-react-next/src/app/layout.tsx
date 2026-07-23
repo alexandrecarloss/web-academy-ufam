@@ -2,7 +2,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 
 import type { Metadata } from "next";
 import { NavBar } from "./components/NavBar/Navbar";
-// import { Geist, Geist_Mono } from "next/font/google";
+import BootstrapClient from "./components/Clients/BootstrapClient";
 
 export const metadata: Metadata = {
   title: "WA Loja",
@@ -19,6 +19,7 @@ export default function RootLayout({
       <body suppressHydrationWarning>
         <NavBar />
         {children}
+        <BootstrapClient/>
       </body>
     </html>
   );

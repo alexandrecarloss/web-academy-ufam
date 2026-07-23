@@ -3,7 +3,7 @@ import { ProductList } from "./components/Product/ProductList/ProductList";
 import { CartSummary } from "./components/Cart/CartSummary/CartSummary";
 import { mockProducts } from "./mocks/products";
 import { mockCartItems } from "./mocks/cartItem";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ProductItemType } from "./types/product";
 
 export default function Products() {
@@ -18,13 +18,11 @@ export default function Products() {
     setQtdTotalItems((prevQtd) => prevQtd + 1);
     setTotalPurchase((prevTotal) => prevTotal + precoProduto);
   };
+  
+  useEffect(() => {
+    console.log("Testando o use effect")
+  }, [])
 
-  // const qtdTotalItens = mockCartItems.reduce((acc, item) => {
-  //   return acc + item.quantidade;
-  // }, 0);
-  // const totalCompra = mockCartItems.reduce((acc, item) => {
-  //   return acc + item.quantidade * item.preco;
-  // }, 0);
   return (
     <>
       <main>
