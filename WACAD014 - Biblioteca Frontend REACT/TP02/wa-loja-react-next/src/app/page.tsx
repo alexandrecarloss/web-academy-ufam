@@ -1,8 +1,6 @@
 "use client";
 import { ProductList } from "./components/Product/ProductList/ProductList";
 import { CartSummary } from "./components/Cart/CartSummary/CartSummary";
-import { mockProducts } from "./mocks/products";
-import { mockCartItems } from "./mocks/cartItem";
 import { useEffect, useState } from "react";
 import { ProductItemType } from "./types/product";
 
@@ -31,7 +29,7 @@ export default function Products() {
             qtdTotalItems={qtdTotalItems}
             totalPurchase={totalPurchase}
           />
-          <ProductList productItems={mockProducts} addToCart={addToCart} />
+          <ProductList addToCart={addToCart} />
         </div>
       </main>
     </>
