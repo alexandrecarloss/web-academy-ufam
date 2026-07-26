@@ -1,4 +1,4 @@
-type Foto = {
+export type Foto = {
     titulo: string
     src: string
 }
