@@ -16,10 +16,6 @@ export default function Products() {
     setQtdTotalItems((prevQtd) => prevQtd + 1);
     setTotalPurchase((prevTotal) => prevTotal + precoProduto);
   };
-  
-  useEffect(() => {
-    console.log("Testando o use effect")
-  }, [])
 
   return (
     <>
