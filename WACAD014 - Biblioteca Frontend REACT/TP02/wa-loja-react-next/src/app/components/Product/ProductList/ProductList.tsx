@@ -14,8 +14,6 @@ export function ProductList({ addToCart }: ProductListProps) {
 
   if (!products) return 'Não há produtos disponíveis no momento'
 
-  console.log(products)
-
   return (
     <>
       <h5 className="mb-3">Produtos disponíveis:</h5>

@@ -26,9 +26,14 @@ export function NavBar() {
               </Link>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="/cart">
+              <Link className="nav-link" href="/cart">
                 Carrinho
-              </a>
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link className="nav-link" href="/favorites">
+                Favoritos
+              </Link>
             </li>
           </ul>
 
