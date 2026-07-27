@@ -2,8 +2,13 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useRouter } from 'next/navigation'
 
 export function NavBar() {
+  const router = useRouter();
+  function logout() {
+    router.push('/login')
+  }
   const pathName = usePathname();
   if (pathName === "/login" || pathName === "/register") {
     return (
@@ -47,7 +52,7 @@ export function NavBar() {
             </li>
           </ul>
 
-          <button className="btn btn-dark">Sair</button>
+          <button className="btn btn-dark" onClick={logout}>Sair</button>
         </div>
       </div>
     </nav>
