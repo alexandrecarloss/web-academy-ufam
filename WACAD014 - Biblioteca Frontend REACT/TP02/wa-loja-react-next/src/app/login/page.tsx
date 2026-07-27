@@ -2,54 +2,25 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { ChangeEvent, SubmitEvent, useState, FocusEvent } from "react";
+import { useForm } from "react-hook-form";
+
+interface FormularioLogin {
+  email: string;
+  password: string;
+}
 
 export default function Login() {
   const router = useRouter();
 
-  const [form, setForm] = useState({
-    email: "",
-    password: "",
-  });
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FormularioLogin>();
 
-  const [errors, setErrors] = useState({
-    email: "",
-    password: "",
-  });
-
-  function handleSubmit(event: SubmitEvent) {
-    event.preventDefault();
-    if (errors.email || errors.password || !form.email || !form.password) {
-      alert("Preencha todos os campos corretamente.");
-      return;
-    }
-    console.log(form.email, form.password);
-    router.push('/');
-  }
-
-  const handleBlur = ({ target }: FocusEvent<HTMLInputElement>) => {
-    const { id, value } = target;
-    let errorMessage = "";
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-    if (!value.trim()) {
-      errorMessage = "Este campo é obrigatório.";
-    } else if (id === "email" && !emailRegex.test(value)) {
-      errorMessage = "Digite um e-mail válido.";
-    }
-
-    setErrors((prev) => ({
-      ...prev,
-      [id]: errorMessage,
-    }));
-  };
-
-  const handleChange = ({ target }: ChangeEvent<HTMLInputElement>) => {
-    const { id, value } = target;
-    setForm({
-      ...form,
-      [id]: value,
-    });
+  const onSubmit = (data: FormularioLogin) => {
+    console.log(data);
+    router.push("/");
   };
 
   return (
@@ -58,39 +29,53 @@ export default function Login() {
         <div className="row min-vw-100">
           <div className="col-12 col-md-4 bg-light d-flex justify-content-center align-items-center">
             <h2>Bem vindo à WA Loja!</h2>
-          </div>{" "}
+          </div>
           <div className="col-12 col-md-8 d-flex justify-content-center align-items-center">
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit(onSubmit)}>
               <div className="mb-3">
                 <label htmlFor="email" className="form-label">
                   Email
                 </label>
                 <input
                   type="email"
-                  className={`form-control form-control-lg ${errors.email ? 'is-invalid' : ''}`}
+                  className={`form-control form-control-lg ${
+                    errors.email ? "is-invalid" : ""
+                  }`}
                   id="email"
-                  value={form.email}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  aria-describedby="email"
-                  required
+                  {...register("email", {
+                    required: "Este campo é obrigatório.",
+                  })}
                 />
-                {errors.email && <div className="invalid-feedback">{errors.email}</div>}
+                {errors.email && (
+                  <span className="invalid-feedback d-block">
+                    {errors.email.message}
+                  </span>
+                )}
               </div>
+
               <div className="mb-3">
                 <label htmlFor="password" className="form-label">
                   Senha
                 </label>
                 <input
                   type="password"
-                  className={`form-control form-control-lg ${errors.password ? 'is-invalid' : ''}`}
-                  value={form.password}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
+                  className={`form-control form-control-lg ${
+                    errors.password ? "is-invalid" : ""
+                  }`}
                   id="password"
-                  required
+                  {...register("password", {
+                    required: "Este campo é obrigatório.",
+                    minLength: {
+                      value: 6,
+                      message: "A senha deve ter pelo menos 6 caracteres.",
+                    },
+                  })}
                 />
-                {errors.password && <div className="invalid-feedback">{errors.password}</div>}
+                {errors.password && (
+                  <span className="invalid-feedback d-block">
+                    {errors.password.message}
+                  </span>
+                )}
               </div>
 
               <div className="d-grid col-12">

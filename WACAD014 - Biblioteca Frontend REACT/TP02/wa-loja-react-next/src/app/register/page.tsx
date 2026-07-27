@@ -2,71 +2,29 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { ChangeEvent, useState, SubmitEvent, FocusEvent } from "react";
+import { useForm } from "react-hook-form";
+
+interface FormularioRegister {
+  name: string;
+  email: string;
+  confirmEmail: string;
+  password: string;
+}
 
 export default function Register() {
   const router = useRouter();
 
-  const [form, setForm] = useState({
-    email: "",
-    confirmEmail: "",
-    name: "",
-    password: "",
-  });
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FormularioRegister>();
 
-  const [errors, setErrors] = useState({
-    email: "",
-    confirmEmail: "",
-    name: "",
-    password: "",
-  });
-
-  const handleBlur = ({ target }: FocusEvent<HTMLInputElement>) => {
-    const { id, value } = target;
-    let errorMessage = "";
-
-    // Regex para validar formato de e-mail basico
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-    if (!value.trim()) {
-      errorMessage = "Este campo é obrigatório.";
-    } else {
-      if (id === "email" && !emailRegex.test(value)) {
-        errorMessage = "Digite um e-mail válido.";
-      } else if (id === "confirmEmail" && value !== form.email) {
-        errorMessage = "Os e-mails informados não coincidem.";
-      } else if (id === "password" && value.length < 3) {
-        errorMessage = "A senha deve ter pelo menos 3 caracteres.";
-      }
-    }
-
-    setErrors((prevErrors) => ({
-      ...prevErrors,
-      [id]: errorMessage,
-    }));
-  };
-
-  function handleSubmit(event: SubmitEvent) {
-    event.preventDefault();
-    if (
-      errors.name || errors.email || errors.confirmEmail || errors.password ||
-      !form.name || !form.email || !form.confirmEmail || !form.password
-    ) {
-      alert("Por favor, preencha todos os campos corretamente.");
-      return;
-    }
-
-    console.log(form.email, form.confirmEmail, form.name, form.password);
+  const onSubmit = (data: FormularioRegister) => {
+    console.log(data);
     router.push("/");
-  }
-
-  const handleChange = ({ target }: ChangeEvent<HTMLInputElement>) => {
-    const { id, value } = target;
-    setForm({
-      ...form,
-      [id]: value,
-    });
   };
+
   return (
     <main>
       <div className="container-fluid d-flex min-vh-100">
@@ -75,22 +33,26 @@ export default function Register() {
             <h2>Bem vindo à WA Loja!</h2>
           </div>
           <div className="col-12 col-md-8 d-flex justify-content-center align-items-center">
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit(onSubmit)}>
               <div className="mb-3">
                 <label htmlFor="name" className="form-label">
                   Nome
                 </label>
                 <input
                   type="text"
-                  className={`form-control form-control-lg ${errors.name ? "is-invalid" : ""}`}
+                  className={`form-control form-control-lg ${
+                    errors.name ? "is-invalid" : ""
+                  }`}
                   id="name"
-                  value={form.name}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  aria-describedby="name"
-                  required
+                  {...register("name", {
+                    required: "Este campo é obrigatório.",
+                  })}
                 />
-                {errors.name && <div className="invalid-feedback">{errors.name}</div>}
+                {errors.name && (
+                  <span className="invalid-feedback d-block">
+                    {errors.name.message}
+                  </span>
+                )}
               </div>
 
               <div className="mb-3">
@@ -99,15 +61,19 @@ export default function Register() {
                 </label>
                 <input
                   type="email"
-                  className={`form-control form-control-lg ${errors.email ? "is-invalid" : ""}`}
-                  value={form.email}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
+                  className={`form-control form-control-lg ${
+                    errors.email ? "is-invalid" : ""
+                  }`}
                   id="email"
-                  aria-describedby="email"
-                  required
+                  {...register("email", {
+                    required: "Este campo é obrigatório.",
+                  })}
                 />
-                {errors.email && <div className="invalid-feedback">{errors.email}</div>}
+                {errors.email && (
+                  <span className="invalid-feedback d-block">
+                    {errors.email.message}
+                  </span>
+                )}
               </div>
 
               <div className="mb-3">
@@ -116,30 +82,44 @@ export default function Register() {
                 </label>
                 <input
                   type="email"
-                  className={`form-control form-control-lg ${errors.confirmEmail ? "is-invalid" : ""}`}
+                  className={`form-control form-control-lg ${
+                    errors.confirmEmail ? "is-invalid" : ""
+                  }`}
                   id="confirmEmail"
-                  value={form.confirmEmail}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  aria-describedby="confirmEmail"
-                  required
+                  {...register("confirmEmail", {
+                    required: "Este campo é obrigatório.",
+                  })}
                 />
-                {errors.confirmEmail && <div className="invalid-feedback">{errors.confirmEmail}</div>}
+                {errors.confirmEmail && (
+                  <span className="invalid-feedback d-block">
+                    {errors.confirmEmail.message}
+                  </span>
+                )}
               </div>
+
               <div className="mb-3">
                 <label htmlFor="password" className="form-label">
                   Senha
                 </label>
                 <input
                   type="password"
-                  className={`form-control form-control-lg ${errors.password ? "is-invalid" : ""}`}
-                  value={form.password}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
+                  className={`form-control form-control-lg ${
+                    errors.password ? "is-invalid" : ""
+                  }`}
                   id="password"
-                  required
+                  {...register("password", {
+                    required: "Este campo é obrigatório.",
+                    minLength: {
+                      value: 6,
+                      message: "A senha deve ter pelo menos 6 caracteres.",
+                    },
+                  })}
                 />
-                {errors.password && <div className="invalid-feedback">{errors.password}</div>}
+                {errors.password && (
+                  <span className="invalid-feedback d-block">
+                    {errors.password.message}
+                  </span>
+                )}
               </div>
 
               <div className="d-grid col-12">
