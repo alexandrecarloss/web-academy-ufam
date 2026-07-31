@@ -4,7 +4,7 @@ import { useContext } from 'react'
 import Image from 'next/image'
 import { calculateDiscountedPrice } from '@/app/helpers'
 import { Product } from '@/app/types/product'
-import { FavoritesContext } from '../FavoritesProvider/FavoritesProvider'
+import { FavoritesContext } from "@/app/contexts/FavoritesContext/FavoritesProvider";
 
 interface ProductCardProps {
   product: Product
@@ -20,7 +20,7 @@ export default function ProductCard({
   const { favorites, setFavorites } = useContext(FavoritesContext)
 
   const addToFavorites = (productToAdd: Product) => {
-    setFavorites([...favorites, productToAdd])
+    setFavorites((currentFavorites) => [...favorites, productToAdd])
   }
 
   const isFavorite = favorites.some((item) => item.id === product.id)

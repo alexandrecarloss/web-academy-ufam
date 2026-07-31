@@ -5,19 +5,15 @@ import React, { createContext, useState } from "react"
 
 type FavoriteContextType = {
   favorites: Product[]
-  setFavorites: React.Dispatch<React.SetStateAction<Product[]>> | ((value: Product[]) => {})
+  setFavorites: React.Dispatch<React.SetStateAction<Product[]>>
 }
 
 export const FavoritesContext = createContext<FavoriteContextType>({
   favorites: [],
-  setFavorites: () => ({})
+  setFavorites: () => {}
 })
 
-interface FavoritesProviderProps {
-  children: React.ReactNode
-}
-
-const FavoritesProvider = ({ children }: FavoritesProviderProps) => {
+const FavoritesProvider = ({ children }: {children: React.ReactNode}) => {
   const [favorites, setFavorites] = useState<Product[]>([])
 
   const values = {

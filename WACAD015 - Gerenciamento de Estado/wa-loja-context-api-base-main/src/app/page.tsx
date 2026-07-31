@@ -1,19 +1,16 @@
-'use client'
+"use client";
 
-import ProductList from './components/ProductList/ProductList'
-import { mockProducts } from './mocks/products'
-import FavoritesProvider from './components/FavoritesProvider/FavoritesProvider'
+import ProductList from "./components/ProductList/ProductList";
+import { mockProducts } from "./mocks/products";
 
 export default function HomePage() {
-  const products = mockProducts
+  const products = mockProducts;
 
   return (
     <main>
-      <div className='container p-5'>
-        <FavoritesProvider>
-          <ProductList products={products} />
-        </FavoritesProvider>
+      <div className="container p-5">
+        <ProductList products={products} />
       </div>
     </main>
-  )
+  );
 }
