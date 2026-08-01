@@ -1,28 +1,31 @@
-import 'bootstrap/dist/css/bootstrap.min.css'
+import "bootstrap/dist/css/bootstrap.min.css";
 
-import type { Metadata } from 'next'
-import BootstrapClient from './components/BootstrapClient'
-import Navbar from './components/Navbar/Navbar'
-import FavoritesProvider from './contexts/FavoritesContext/FavoritesProvider'
+import type { Metadata } from "next";
+import BootstrapClient from "./components/BootstrapClient";
+import Navbar from "./components/Navbar/Navbar";
+import FavoritesProvider from "./contexts/FavoritesContext/FavoritesProvider";
+import AuthProvider from "./contexts/AuthContext/AuthProvider";
 
 export const metadata: Metadata = {
-  title: 'WA Loja'
-}
+  title: "WA Loja",
+};
 
 export default function RootLayout({
-  children
+  children,
 }: Readonly<{
-  children: React.ReactNode
+  children: React.ReactNode;
 }>) {
   return (
-    <html lang='pt-br'>
+    <html lang="pt-br">
       <body>
-        <FavoritesProvider>
-          <Navbar />
-          {children}
-          <BootstrapClient />
-        </FavoritesProvider>
+        <AuthProvider>
+          <FavoritesProvider>
+            <Navbar />
+            {children}
+            <BootstrapClient />
+          </FavoritesProvider>
+        </AuthProvider>
       </body>
     </html>
-  )
+  );
 }
